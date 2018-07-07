@@ -19,16 +19,20 @@ description: >- # this means to ignore newlines until "baseurl:"
     I am currently working as a post-doctor in IOP China, devoted to quantum machine learning.
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: https://giggleliu.github.io
+site.url: https://giggleliu.github.io
 twitter_username: jekyllrb
 github_username:  jekyll
 background-image: url('/images/bg1.jpg')
+avatar: /images/avatar.png
 
 # Build settings
 markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+
+include:
+  - "images"
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

@@ -24,8 +24,8 @@ $$
 {%endraw%}
 ### For an Obserable
 
-Consider the expect of $B$ on state <span>$\vert\psi_N\rangle = U_{N:k+1} U_k(\eta)U_{k-1:1}\vert\psi_0\rangle$</span> with $U_k(\eta)=e^{i\Xi(\eta)}$,
-The first task is to get the derivation of the graident of an expectation value that appear in Ref. [2-4] briefly, the gradient
+Consider the expectation value of $B$ on state <span>$\vert\psi_N\rangle = U_{N:k+1} U_k(\eta)U_{k-1:1}\vert\psi_0\rangle$</span> with $U_k(\eta)=e^{i\Xi(\eta)}$,
+Now we want to get the gradient for this expectation value that appear in Ref. [2-4] briefly, the gradient
 <div>$$\begin{align}\frac{\partial \langle B\rangle_\eta}{\partial \eta} &=i\langle \psi_0\vert U_{N:1}^\dagger BU_{N:k+1} \frac{\partial \Xi(\eta)}{\partial \eta} U_{k:1}\vert \psi_0\rangle-i\langle \psi_0\vert U_{k:1}^\dagger \frac{\partial \Xi(\eta)}{\partial \eta} U_{N:k+1}^\dagger BU_{N:1}\vert \psi_0\rangle\end{align}$$</div>
 Here, we have used the fact that $\Xi(\eta)$ is Hermitian. Define $O_{k+1}\equiv U_{N:k+1}^\dagger BU_{N:k+1}$ and $\vert \psi_{k}\rangle\equiv U_{k:1}\vert \psi_0\rangle$, we have
 <div>$$\begin{equation}\frac{\partial \langle B\rangle_\eta}{\partial \eta} =\langle\psi_{k}\vert  i\left[O_{k+1}, \frac{\partial \Xi(\eta)}{\partial \eta}\right]\vert \psi_{k}\rangle.\end{equation}$$</div>
