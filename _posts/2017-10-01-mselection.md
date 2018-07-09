@@ -7,11 +7,11 @@ title: Symmetries of Neural Networks as a Quantum Wave Function Ansatz
 Translation invariance of wave functions are different from that in Neural networks,
 since wave functions have phases.
 
-For state $\hbar\psi\rangle$ with momentum $k$, we have the momentum-translation relation
+For state $\vert\psi\rangle$ with momentum $k$, we have the momentum-translation relation
 
-$\langle T_n\sigma\hbar\psi\rangle=e^{ikn}\langle \sigma\hbar\psi\rangle$
+$\langle T_n\sigma\vert\psi\rangle=e^{ikn}\langle \sigma\vert\psi\rangle$
 
-Assume $\langle\sigma\hbar\psi\rangle=h(\sum\limits_m e^{-ikm}g(T_m\sigma))$, and wish to obtain the state in desired momentum sector. Usually $g(T_m\sigma)$ correspond to some elemental function applied on the output of a convolution layer. **To make g more powerful, we can mix different features but not $m$ (as batch dimension)**.
+Assume $\langle\sigma\vert\psi\rangle=h(\sum\limits_m e^{-ikm}g(T_m\sigma))$, and wish to obtain the state in desired momentum sector. Usually $g(T_m\sigma)$ correspond to some elemental function applied on the output of a convolution layer. **To make g more powerful, we can mix different features but not $m$ (as batch dimension)**.
 
 
 
@@ -23,7 +23,7 @@ For $k\neq0​$, let $y(\sigma)=\sum\limits_m e^{-ikm}g(T_m\sigma)​$, we have 
 
 * linear function that $h(\alpha y_1+\beta y_2)=\alpha h(y_1)+\beta h(y_2)$, let $\beta=0$ and the above result is straight forward,
 * nonlinear function that map $y$ to either $0$ or $\alpha y$ like ReLU,
-* elemental function that act on absolute part like $h(y)=\hat{y}h(\hbar y\hbar)$ with $\hat{y}\equiv\frac{y}{\hbar y\hbar}$, $h(e^{ikn}y)=e^{ikn}\hat{y} h(\hbar y\hbar)=e^{ikn}h(y)$,
+* elemental function that act on absolute part like $h(y)=\hat{y}h(\vert y\vert)$ with $\hat{y}\equiv\frac{y}{\vert y\vert}$, $h(e^{ikn}y)=e^{ikn}\hat{y} h(\vert y\vert)=e^{ikn}h(y)$,
 * combination of **phase keeping** functions are also **phase keeping**.
 
 #### Numerical Result
