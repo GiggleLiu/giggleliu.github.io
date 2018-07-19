@@ -24,14 +24,14 @@ $$
 {%endraw%}
 ### For an Obserable
 
-Consider the expectation value of $B$ on state <span>$\vert\psi_N\rangle = U_{N:k+1} U_k(\eta)U_{k-1:1}\vert\psi_0\rangle$</span> with $U_k(\eta)=e^{i\Xi(\eta)}$,
+Consider the expectation value of $B$ on state <span>$\vert\psi_N\rangle = U_{N:k+1} U_k(\eta)U_{k-1:1}\vert\psi_0\rangle$</span> with $U_k(\eta)=e^{i\Xi\eta/2}$,
 Now we want to get the gradient for this expectation value that appear in Ref. [2-4] briefly, the gradient
-<div>$$\begin{align}\frac{\partial \langle B\rangle_\eta}{\partial \eta} &=i\langle \psi_0\vert U_{N:1}^\dagger BU_{N:k+1} \frac{\partial \Xi(\eta)}{\partial \eta} U_{k:1}\vert \psi_0\rangle-i\langle \psi_0\vert U_{k:1}^\dagger \frac{\partial \Xi(\eta)}{\partial \eta} U_{N:k+1}^\dagger BU_{N:1}\vert \psi_0\rangle\end{align}$$</div>
+<div>$$\begin{align}\frac{\partial \langle B\rangle_\eta}{\partial \eta} &=\frac i 2\langle \psi_0\vert U_{N:1}^\dagger BU_{N:k+1} \Xi U_{k:1}\vert \psi_0\rangle-\frac i 2\langle \psi_0\vert U_{k:1}^\dagger \Xi U_{N:k+1}^\dagger BU_{N:1}\vert \psi_0\rangle\end{align}$$</div>
 Here, we have used the fact that $\Xi(\eta)$ is Hermitian. Define $O_{k+1}\equiv U_{N:k+1}^\dagger BU_{N:k+1}$ and $\vert \psi_{k}\rangle\equiv U_{k:1}\vert \psi_0\rangle$, we have
-<div>$$\begin{equation}\frac{\partial \langle B\rangle_\eta}{\partial \eta} =\langle\psi_{k}\vert  i\left[O_{k+1}, \frac{\partial \Xi(\eta)}{\partial \eta}\right]\vert \psi_{k}\rangle.\end{equation}$$</div>
-Define $A_\pm\equiv\frac{1}{\sqrt{2}} (1\pm i\frac{\partial \Xi(\eta)}{\partial \eta})$, we can easily verify that $ i\left[O_{k+1}, \frac{\partial \Xi(\eta)}{\partial \eta}\right]= A^\dagger_+ O_{k+1}A_+-A_-^\dagger O_{k+1}A_-$,
+<div>$$\begin{equation}\frac{\partial \langle B\rangle_\eta}{\partial \eta} =\langle\psi_{k}\vert  \frac i 2\left[O_{k+1}, \Xi\right]\vert \psi_{k}\rangle.\end{equation}$$</div>
+Define $A_\pm\equiv\frac{1}{\sqrt{2}} (1\pm i\Xi)$, we can easily verify that $ i\left[O_{k+1}, \Xi\right]= A^\dagger_+ O_{k+1}A_+-A_-^\dagger O_{k+1}A_-$,
 which can be estimated unbiasedly by constructing $\vert \psi_N\rangle_\pm = U_{N:k+1}A_\pm U_{k:1}\vert \psi_0\rangle$.
-Noticing for a non-dissipative system, we further require $A$ being unitary, which means $\frac{\partial \Xi(\eta)}{\partial \eta}^2=1$ (e.g. Pauli operators, CNOT and SWAP).
+Noticing for a non-dissipative system, we further require $A$ being unitary, which means $\Xi^2=1$ (e.g. Pauli operators, CNOT and SWAP).
 
 ### For statistic functional
 
