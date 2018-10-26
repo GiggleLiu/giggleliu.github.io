@@ -4,19 +4,16 @@ title: About
 permalink: /about/
 ---
 #### Career
-I am currently working as a post-doctor in IOP China, devoted to the project named Machine learning and quantum many body systems.
+I am a post-doctor in IOP China, devoted to Quantum Machine learning, I like algorithms!
 
-I aquired my PHD degree on Physics department NanJing University in 2017 summer.
+See this [CV](https://github.com/GiggleLiu/CV/raw/master/cv.pdf) to know more about me.
 
-#### interest
-Discussions on both optimization algorithms and many body quantum systems are welcome.
-Comparing with technics, I like beautiful maths. To be explicit, I am interested in
-
+#### Interests
 * Quantum Computation
 * Tensor Networks
 * Machine Learning
 
 ### Contact me
 
-[cacate0129@iphy.ac.cn](mailto:cacate0129@iphy.ac.cn)
+[cacate0129@gmail.com](mailto:cacate0129@gmail.com)
 
