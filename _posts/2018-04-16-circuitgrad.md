@@ -38,9 +38,9 @@ $$
 & = r\cos(\eta-\phi)+\gamma
 \end{align}
 $$
-Here, In line 1, we introduces shorthands $\vert \psi_{k}\rangle\equiv U_{k:1}\vert \psi_0\rangle$ and $\tilde{B}_{k+1}\equiv U_{N:k+1}^\dagger BU_{N:k+1}$.In line 5, we introduced $\alpha = \frac{1}{2}\left(\langle\psi_k|\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle\right)$,  $\beta = i\frac{1}{2}\langle\psi_k|\left[\Xi, \tilde{B}_{k+1}\right]|\psi_k\rangle$ and $\gamma = \frac{1}{2}\langle\psi_k|\tilde{B}+\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle$. Finally, we obtained a sine function.
+Here, In line 1, we introduces shorthands $\vert \psi_{k}\rangle\equiv U_{k:1}\vert \psi_0\rangle​$ and $\tilde{B}_{k+1}\equiv U_{N:k+1}^\dagger BU_{N:k+1}​$.In line 5, we introduced $\alpha = \frac{1}{2}\left(\langle\psi_k\vert\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle\right)​$,  $\beta = i\frac{1}{2}\langle\psi_k\vert\left[\Xi, \tilde{B}_{k+1}\right]\vert\psi_k\rangle​$ and $\gamma = \frac{1}{2}\langle\psi_k\vert\tilde{B}+\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle​$. Finally, we obtained a sine function.
 
-<img src="../images/diff_circuit.png" width="400">
+<img src="/images/diff_circuit.png" width="400">
 
 ### For an obserable
 
