@@ -1,5 +1,5 @@
 ---
-layout: post
+....layout: post
 title: Get the gradient of a quantum circuit
 ---
 {%raw%}
@@ -22,14 +22,35 @@ $$
 \newcommand{\pshift}[1]{{p_{\thetav+#1}}}
 $$
 {%endraw%}
-### For an Obserable
 
-Consider the expectation value of $B$ on state <span>$\vert\psi_N\rangle = U_{N:k+1} U_k(\eta)U_{k-1:1}\vert\psi_0\rangle$</span> with $U_k(\eta)=e^{i\Xi\eta/2}$,
+### The landscape of a quantum circuit
+
+This section is a simplified discussion of results in Ref. 5. 
+
+Consider the expectation value of $B$ on state <span>$\vert\psi_N\rangle = U_{N:k+1} U_k(\eta)U_{k-1:1}\vert\psi_0\rangle$</span> with $U_k(\eta)=e^{-i\Xi\eta/2}$. Given $\Xi^2 =1$, we have $U_k(\eta) = \cos(\frac{\eta}{2})-i\sin(\frac{\eta}{2})\Xi$.
+$$
+\begin{align}
+\langle B\rangle &= \langle \psi_k| \left[\cos\frac{\eta}{2}+i\sin\frac{\eta}{2}\Xi\right] \tilde{B}_{k+1} \left[\cos\frac{\eta}{2}-i\sin\frac{\eta}{2}\Xi\right]|\psi_k\rangle\\
+&= \cos^2\frac{\eta}{2}\langle\psi_k| \tilde{B}_{k+1}|\psi_k\rangle +\sin^2\frac{\eta}{2}\langle\psi_k|\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle + i\sin\frac{\eta}{2}\cos\frac{\eta}{2}\langle\psi_k|\left[\Xi, \tilde{B}_{k+1}\right]|\psi_k\rangle\\
+&=\cos^2\frac{\eta}{2}\left(\langle\psi_k|\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle\right)+ i\frac{\sin\eta}{2}\langle\psi_k|\left[\Xi, \tilde{B}_{k+1}\right]|\psi_k\rangle + \langle\psi_k|\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle\\
+&=\frac{\cos\eta}{2}\left(\langle\psi_k|\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle\right)+ i\frac{\sin\eta}{2}\langle\psi_k|\left[\Xi, \tilde{B}_{k+1}\right]|\psi_k\rangle + \frac{1}{2}\langle\psi_k|\tilde{B}+\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle\\
+&=\alpha\cos\eta+ \beta\sin\eta+\gamma\\
+& = r\cos(\eta-\phi)+\gamma
+\end{align}
+$$
+Here, In line 1, we introduces shorthands $\vert \psi_{k}\rangle\equiv U_{k:1}\vert \psi_0\rangle$ and $\tilde{B}_{k+1}\equiv U_{N:k+1}^\dagger BU_{N:k+1}$.In line 5, we introduced $\alpha = \frac{1}{2}\left(\langle\psi_k|\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle\right)$,  $\beta = i\frac{1}{2}\langle\psi_k|\left[\Xi, \tilde{B}_{k+1}\right]|\psi_k\rangle$ and $\gamma = \frac{1}{2}\langle\psi_k|\tilde{B}+\Xi \tilde{B}_{k+1}\Xi|\psi_k\rangle$. Finally, we obtained a sine function.
+
+<img src="../images/diff_circuit.png" width="400">
+
+### For an obserable
+
 Now we want to get the gradient for this expectation value that appear in Ref. [2-4] briefly, the gradient
 <div>$$\begin{align}\frac{\partial \langle B\rangle_\eta}{\partial \eta} &=\frac i 2\langle \psi_0\vert U_{N:1}^\dagger BU_{N:k+1} \Xi U_{k:1}\vert \psi_0\rangle-\frac i 2\langle \psi_0\vert U_{k:1}^\dagger \Xi U_{N:k+1}^\dagger BU_{N:1}\vert \psi_0\rangle\end{align}$$</div>
-Here, we have used the fact that $\Xi(\eta)$ is Hermitian. Define $O_{k+1}\equiv U_{N:k+1}^\dagger BU_{N:k+1}$ and $\vert \psi_{k}\rangle\equiv U_{k:1}\vert \psi_0\rangle$, we have
-<div>$$\begin{equation}\frac{\partial \langle B\rangle_\eta}{\partial \eta} =\langle\psi_{k}\vert  \frac i 2\left[O_{k+1}, \Xi\right]\vert \psi_{k}\rangle.\end{equation}$$</div>
-Define $A_\pm\equiv\frac{1}{\sqrt{2}} (1\pm i\Xi)$, we can easily verify that $ i\left[O_{k+1}, \Xi\right]= A^\dagger_+ O_{k+1}A_+-A_-^\dagger O_{k+1}A_-$,
+
+#### Here, we have used the fact that $\Xi(\eta)$ is Hermitian. Using the shorthand defined in above section
+
+<div>$$\begin{equation}\frac{\partial \langle B\rangle_\eta}{\partial \eta} =\langle\psi_{k}\vert  \frac i 2\left[\tilde B_{k+1}, \Xi\right]\vert \psi_{k}\rangle.\end{equation}$$</div>
+Define $A_\pm\equiv\frac{1}{\sqrt{2}} (1\pm i\Xi)$, we can easily verify that $ i\left[\tilde B_{k+1}, \Xi\right]= A^\dagger_+ \tilde B_{k+1}A_+-A_-^\dagger \tilde B_{k+1}A_-$,
 which can be estimated unbiasedly by constructing $\vert \psi_N\rangle_\pm = U_{N:k+1}A_\pm U_{k:1}\vert \psi_0\rangle$.
 Noticing for a non-dissipative system, we further require $A$ being unitary, which means $\Xi^2=1$ (e.g. Pauli operators, CNOT and SWAP).
 
@@ -59,8 +80,15 @@ By repeatedly applying the gradient formula, we will be able to obtain higher or
 ### References
 
 1. Jin-Guo Liu and Lei Wang, [arXiv:1804.04168](https://arxiv.org/abs/1804.04168)
+
 2. J. Li, X. Yang, X. Peng, and C.-P. Sun, Phys. Rev. Lett. 118,
-150503 (2017).
+  150503 (2017).
+
 3. E. Farhi and H. Neven, arXiv:1802.06002.
+
 4. K. Mitarai, M. Negoro, M. Kitagawa, and K. Fujii,
-arXiv:1803.00745.
+  arXiv:1803.00745.
+
+5. Nakanishi, Ken M., Keisuke Fujii, and Synge Todo. 
+
+  arXiv:1903.12166 (2019).
