@@ -38,7 +38,7 @@ $$
 & = r\cos(\eta-\phi)+\gamma
 \end{align}
 $$
-Here, In line 1, we introduces shorthands $\vert \psi_{k}\rangle = U_{k:1}\vert \psi_0\rangle$ and <div>$\tilde{B}_{k+1} = U_{N:k+1}^\dagger BU_{N:k+1}$</div>.
+Here, In line 1, we introduces shorthands $|\psi_{k}\rangle = U_{k:1}|\psi_0\rangle$ and $\tilde{B}_{k+1} = U_{N:k+1} B U_{N:k+1}$.
 
 In line 5, we introduced <div>$\alpha = \frac{1}{2}\left(\langle\psi_k\vert\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle\right)$</div>,  <div>$\beta = i\frac{1}{2}\langle\psi_k\vert\left[\Xi, \tilde{B}_{k+1}\right]\vert\psi_k\rangle$</div> and <div>$\gamma = \frac{1}{2}\langle\psi_k\vert\tilde{B}+\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle$</div>. Finally, we obtained a sine function.
 
