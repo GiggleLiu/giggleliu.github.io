@@ -48,7 +48,9 @@ $$
 &\tilde{B}_{k+1} = U_{N:k+1}^\dagger B U_{N:k+1}
 \end{align}
 $$
+
 And in line 5, we have introduced
+
 $$
 \begin{align}
 \alpha &= \frac{1}{2}\left(\langle\psi_k\vert\tilde{B}{k+1}-\Xi \tilde{B}{k+1}\Xi\vert\psi_k\rangle\right),\\
@@ -63,7 +65,7 @@ Finally, we obtained a sine function.
 
 A direct proposition is
 $$
-\frac{\partial \langle B\rangle_\eta}{\partial \eta} = \frac{1}{2}(\langle B\rangle_{\eta+\frac{\pi}{2}} - \langle B\rangle_{\eta+\frac{\pi}{2}})
+\frac{\partial \langle B\rangle_\eta}{\partial \eta} = \frac{1}{2}(\langle B\rangle_{\eta+\frac{\pi}{2}} - \langle B\rangle_{\eta-\frac{\pi}{2}})
 $$
 
 
