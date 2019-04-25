@@ -28,6 +28,7 @@ $$
 This section is a simplified discussion of results in Ref. 5. 
 
 Consider the expectation value of $B$ on state <span>$\vert\psi_N\rangle = U_{N:k+1} U_k(\eta)U_{k-1:1}\vert\psi_0\rangle$</span> with $U_k(\eta)=e^{-i\Xi\eta/2}$. Given $\Xi^2 =1$, we have $U_k(\eta) = \cos(\frac{\eta}{2})-i\sin(\frac{\eta}{2})\Xi$.
+
 $$
 \begin{align}
 \langle B\rangle &= \langle \psi_k| \left[\cos\frac{\eta}{2}+i\sin\frac{\eta}{2}\Xi\right] \tilde{B}_{k+1} \left[\cos\frac{\eta}{2}-i\sin\frac{\eta}{2}\Xi\right]|\psi_k\rangle\\
@@ -38,7 +39,9 @@ $$
 & = r\cos(\eta-\phi)+\gamma
 \end{align}
 $$
+
 Here, In line 1, we used the following shorthands
+
 $$
 \begin{align}
 &|\psi_{k}\rangle = U_{k:1}|\psi_0\rangle\\
@@ -53,6 +56,7 @@ $$
 \gamma &= \frac{1}{2}\langle\psi_k\vert\tilde{B}+\Xi \tilde{B}{k+1}\Xi\vert\psi_k\rangle.
 \end{align}
 $$
+
 Finally, we obtained a sine function.
 
 <img src="/images/diff_circuit.png" width="400">
