@@ -38,21 +38,17 @@ $$
 & = r\cos(\eta-\phi)+\gamma
 \end{align}
 $$
-Here, In line 1, we introduces shorthands $\vert \psi_{k}\rangle\equiv U_{k:1}\vert \psi_0\rangle​$ and $\tilde{B}_{k+1}\equiv U_{N:k+1}^\dagger BU_{N:k+1}​$.In line 5, we introduced $\alpha = \frac{1}{2}\left(\langle\psi_k\vert\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle\right)​$,  $\beta = i\frac{1}{2}\langle\psi_k\vert\left[\Xi, \tilde{B}_{k+1}\right]\vert\psi_k\rangle​$ and $\gamma = \frac{1}{2}\langle\psi_k\vert\tilde{B}+\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle​$. Finally, we obtained a sine function.
+Here, In line 1, we introduces shorthands $\vert \psi_{k}\rangle = U_{k:1}\vert \psi_0\rangle$ and <div>$\tilde{B}_{k+1} = U_{N:k+1}^\dagger BU_{N:k+1}$</div>.
 
-<img src="/images/diff_circuit.png" width="400">
+In line 5, we introduced <div>$\alpha = \frac{1}{2}\left(\langle\psi_k\vert\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle\right)$</div>,  <div>$\beta = i\frac{1}{2}\langle\psi_k\vert\left[\Xi, \tilde{B}_{k+1}\right]\vert\psi_k\rangle$</div> and <div>$\gamma = \frac{1}{2}\langle\psi_k\vert\tilde{B}+\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle$</div>. Finally, we obtained a sine function.
 
-### For an obserable
+<img src="../images/diff_circuit.png" width="400">
 
-Now we want to get the gradient for this expectation value that appear in Ref. [2-4] briefly, the gradient
-<div>$$\begin{align}\frac{\partial \langle B\rangle_\eta}{\partial \eta} &=\frac i 2\langle \psi_0\vert U_{N:1}^\dagger BU_{N:k+1} \Xi U_{k:1}\vert \psi_0\rangle-\frac i 2\langle \psi_0\vert U_{k:1}^\dagger \Xi U_{N:k+1}^\dagger BU_{N:1}\vert \psi_0\rangle\end{align}$$</div>
+A direct proposition is
+$$
+\frac{\partial \langle B\rangle_\eta}{\partial \eta} = \frac{1}{2}(\langle B\rangle_{\eta+\frac{\pi}{2}} - \langle B\rangle_{\eta+\frac{\pi}{2}})
+$$
 
-#### Here, we have used the fact that $\Xi(\eta)$ is Hermitian. Using the shorthand defined in above section
-
-<div>$$\begin{equation}\frac{\partial \langle B\rangle_\eta}{\partial \eta} =\langle\psi_{k}\vert  \frac i 2\left[\tilde B_{k+1}, \Xi\right]\vert \psi_{k}\rangle.\end{equation}$$</div>
-Define $A_\pm\equiv\frac{1}{\sqrt{2}} (1\pm i\Xi)$, we can easily verify that $ i\left[\tilde B_{k+1}, \Xi\right]= A^\dagger_+ \tilde B_{k+1}A_+-A_-^\dagger \tilde B_{k+1}A_-$,
-which can be estimated unbiasedly by constructing $\vert \psi_N\rangle_\pm = U_{N:k+1}A_\pm U_{k:1}\vert \psi_0\rangle$.
-Noticing for a non-dissipative system, we further require $A$ being unitary, which means $\Xi^2=1$ (e.g. Pauli operators, CNOT and SWAP).
 
 ### For statistic functional
 
