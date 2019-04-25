@@ -38,11 +38,24 @@ $$
 & = r\cos(\eta-\phi)+\gamma
 \end{align}
 $$
-Here, In line 1, we introduces shorthands $|\psi_{k}\rangle = U_{k:1}|\psi_0\rangle$ and $\tilde{B}_{k+1} = U_{N:k+1} B U_{N:k+1}$.
+Here, In line 1, we used the following shorthands
+$$
+\begin{align}
+&|\psi_{k}\rangle = U_{k:1}|\psi_0\rangle\\
+&\tilde{B}_{k+1} = U_{N:k+1}^\dagger B U_{N:k+1}
+\end{align}
+$$
+And in line 5, we have introduced
+$$
+\begin{align}
+\alpha &= \frac{1}{2}\left(\langle\psi_k\vert\tilde{B}{k+1}-\Xi \tilde{B}{k+1}\Xi\vert\psi_k\rangle\right),\\
+\beta &= i\frac{1}{2}\langle\psi_k\vert\left[\Xi, \tilde{B}{k+1}\right]\vert\psi_k\rangle,\\
+\gamma &= \frac{1}{2}\langle\psi_k\vert\tilde{B}+\Xi \tilde{B}{k+1}\Xi\vert\psi_k\rangle.
+\end{align}
+$$
+Finally, we obtained a sine function.
 
-In line 5, we introduced <div>$\alpha = \frac{1}{2}\left(\langle\psi_k\vert\tilde{B}_{k+1}-\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle\right)$</div>,  <div>$\beta = i\frac{1}{2}\langle\psi_k\vert\left[\Xi, \tilde{B}_{k+1}\right]\vert\psi_k\rangle$</div> and <div>$\gamma = \frac{1}{2}\langle\psi_k\vert\tilde{B}+\Xi \tilde{B}_{k+1}\Xi\vert\psi_k\rangle$</div>. Finally, we obtained a sine function.
-
-<img src="../images/diff_circuit.png" width="400">
+<img src="/images/diff_circuit.png" width="400">
 
 A direct proposition is
 $$
