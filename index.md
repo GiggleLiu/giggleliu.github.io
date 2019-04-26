@@ -5,6 +5,8 @@
 layout: home
 ---
 
+> "Early to bed and early to rise, makes a man healthy, wealthy, and wise"
+
 ## 007's Code Base
 
 > [Solving TFI model with only 2 qubits - the 幺 simulation](TwoQubit-VQE.html)
