@@ -11786,7 +11786,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[110]:</div>
+<div class="prompt input_prompt">In&nbsp;[368]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">Yao</span>
@@ -11814,7 +11814,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="prompt input_prompt">In&nbsp;[369]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">rotor</span><span class="p">(</span><span class="n">noleading</span><span class="o">::</span><span class="kt">Bool</span><span class="o">=</span><span class="kc">false</span><span class="p">,</span> <span class="n">notrailing</span><span class="o">::</span><span class="kt">Bool</span><span class="o">=</span><span class="kc">false</span><span class="p">)</span> <span class="o">=</span> <span class="n">noleading</span> <span class="o">?</span> <span class="p">(</span><span class="n">notrailing</span> <span class="o">?</span> <span class="n">Rx</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">:</span> <span class="n">chain</span><span class="p">(</span><span class="n">Rx</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Rz</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span> <span class="o">:</span> <span class="p">(</span><span class="n">notrailing</span> <span class="o">?</span> <span class="n">chain</span><span class="p">(</span><span class="n">Rz</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Rx</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">:</span> <span class="n">chain</span><span class="p">(</span><span class="n">Rz</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Rx</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Rz</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
@@ -11832,10 +11832,17 @@ div#notebook {
 
     <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">nrepeat</span>
         <span class="n">unit</span> <span class="o">=</span> <span class="n">chain</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">)</span>
+        <span class="c">#push!(unit, put(nbit_used, 2=&gt;H))</span>
         <span class="k">for</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">nlayer</span>
             <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">1</span><span class="o">=&gt;</span><span class="n">rotor</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">)))</span>
-            <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">control</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="p">(</span><span class="n">j</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">1</span> <span class="o">?</span> <span class="n">X</span> <span class="o">:</span> <span class="n">Z</span><span class="p">)))</span>
-            <span class="n">j</span> <span class="o">==</span> <span class="n">nlayer</span> <span class="o">&amp;&amp;</span> <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">1</span><span class="o">=&gt;</span><span class="n">rotor</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">)))</span>
+            <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="n">H</span><span class="p">))</span>
+            <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)))</span>
+            <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">control</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="n">shift</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">nlayer</span>
+                <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">1</span><span class="o">=&gt;</span><span class="n">rotor</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">)))</span>
+                <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="n">H</span><span class="p">))</span>
+                <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)))</span>
+            <span class="k">end</span>
         <span class="k">end</span>
         <span class="n">push!</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">Measure</span><span class="p">{</span><span class="n">nbit_used</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">AbstractBlock</span><span class="p">}(</span><span class="n">Z</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">nrepeat</span>
@@ -11858,7 +11865,7 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[66]:</div>
+<div class="prompt output_prompt">Out[369]:</div>
 
 
 
@@ -11874,10 +11881,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[370]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">circuit</span> <span class="o">=</span> <span class="n">twoqubit_circuit</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">circuit</span> <span class="o">=</span> <span class="n">twoqubit_circuit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11889,7 +11896,7 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[51]:</div>
+<div class="prompt output_prompt">Out[370]:</div>
 
 
 
@@ -11899,50 +11906,62 @@ div#notebook {
 ├─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
 │  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│  │     ├─ rot(X gate, 0.28471451835422834)
-│  │     └─ rot(Z gate, 0.1324930401020381)
+│  │     ├─ rot(X gate, 0.21095863334236697)
+│  │     └─ rot(Z gate, 0.7061513298045752)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 0.606758675085191)
 │  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>X gate
+│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(0.8692942974976297)
 │  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│  │     ├─ rot(X gate, 0.7917831979745091)
-│  │     └─ rot(Z gate, 0.4758247160838598)
-│  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>Z gate
-│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
-│  │  └─ rot(X gate, 0.03394354689385248)
+│  │     ├─ rot(X gate, 0.9742930709729192)
+│  │     └─ rot(Z gate, 0.2511950574828521)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 0.8950395744932531)
 │  └─ Measure{2,1,AbstractBlock}
 ├─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
 │  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│  │     ├─ rot(X gate, 0.7428559486648305)
-│  │     └─ rot(Z gate, 0.4420842120194748)
+│  │     ├─ rot(X gate, 0.8280959771285328)
+│  │     └─ rot(Z gate, 0.6397794287466416)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 0.43658892015653006)
 │  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>X gate
+│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(0.22277943843476922)
 │  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│  │     ├─ rot(X gate, 0.19858579409999022)
-│  │     └─ rot(Z gate, 0.6718735698455089)
-│  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>Z gate
-│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
-│  │  └─ rot(X gate, 0.9055907558411531)
+│  │     ├─ rot(X gate, 0.6583878015555824)
+│  │     └─ rot(Z gate, 0.054800922397594265)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 0.6029031531918727)
 │  └─ Measure{2,1,AbstractBlock}
 └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
    ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
    │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-   │     ├─ rot(X gate, 0.5240466155659402)
-   │     └─ rot(Z gate, 0.9359955626846224)
+   │     ├─ rot(X gate, 0.5187383397135643)
+   │     └─ rot(Z gate, 0.34841339767803015)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ H gate
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ rot(Z gate, 0.7031413016787984)
    ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-   │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>X gate
+   │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(0.5361579854441212)
    ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
    │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-   │     ├─ rot(X gate, 0.11628417012556413)
-   │     └─ rot(Z gate, 0.27758703327336276)
-   ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-   │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>Z gate
-   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
-   │  └─ rot(X gate, 0.18962191529411543)
+   │     ├─ rot(X gate, 0.8057911183128879)
+   │     └─ rot(Z gate, 0.37193762663808716)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ H gate
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ rot(Z gate, 0.6136187886652058)
    ├─ Measure{2,1,AbstractBlock}
    └─ Measure{2,1,AbstractBlock}
 </pre>
@@ -11956,7 +11975,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[371]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="s">&quot;&quot;&quot;</span>
@@ -11986,7 +12005,7 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[68]:</div>
+<div class="prompt output_prompt">Out[371]:</div>
 
 
 
@@ -12002,7 +12021,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[372]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">gensample</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">X</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
@@ -12017,7 +12036,7 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[53]:</div>
+<div class="prompt output_prompt">Out[372]:</div>
 
 
 
@@ -12037,7 +12056,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[373]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">results</span>
@@ -12052,36 +12071,36 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[54]:</div>
+<div class="prompt output_prompt">Out[373]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
 <pre>1024-element Array{Int64,1}:
- -1
- -1
-  1
-  1
- -1
-  1
-  1
   1
  -1
  -1
   1
   1
  -1
+  1
+  1
+  1
+  1
+ -1
+  1
+  1
   ⋮
   1
   1
- -1
- -1
-  1
-  1
   1
   1
   1
  -1
+  1
+  1
+ -1
+  1
   1
   1</pre>
 </div>
@@ -12097,7 +12116,16 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Transverse-field-Ising-Hamiltonian">Transverse field Ising Hamiltonian<a class="anchor-link" href="#Transverse-field-Ising-Hamiltonian">&#182;</a></h2><p>$H = \sum\limits_{i=1}^{N-1} s_i^z s^z_{i+1} + h\sum\limits^{N}_{i=1} s_i^x$</p>
+<h2 id="Model-Hamiltonians">Model Hamiltonians<a class="anchor-link" href="#Model-Hamiltonians">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Transverse-field-Ising-Model">Transverse field Ising Model<a class="anchor-link" href="#Transverse-field-Ising-Model">&#182;</a></h3><p>$H = \sum\limits_{i=1}^{N-1} s_i^z s^z_{i+1} + h\sum\limits^{N}_{i=1} s_i^x$</p>
 <p>where $s^\alpha = \frac 1 2 \sigma^\alpha$ is the spin operator.</p>
 
 </div>
@@ -12105,16 +12133,53 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[374]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">for simplicity, we require an AbstractModel contains `size` and `periodic` members.</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="k">abstract</span> <span class="k">type</span> <span class="n">AbstractModel</span><span class="p">{</span><span class="n">D</span><span class="p">}</span> <span class="k">end</span>
+
+<span class="n">nspin</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="n">AbstractModel</span><span class="p">)</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[374]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>nspin (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[375]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="s">&quot;&quot;&quot;</span>
 <span class="s">transverse field ising model, `h` is the strength of transverse field.</span>
 <span class="s">&quot;&quot;&quot;</span>
-<span class="n">struct</span> <span class="n">TFIChain</span>
-    <span class="n">length</span><span class="o">::</span><span class="kt">Int</span>
+<span class="n">struct</span> <span class="n">TFI</span><span class="p">{</span><span class="n">D</span><span class="p">}</span> <span class="o">&lt;:</span><span class="n">AbstractModel</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span>
+    <span class="n">size</span><span class="o">::</span><span class="kt">NTuple</span><span class="p">{</span><span class="n">D</span><span class="p">,</span> <span class="kt">Int</span><span class="p">}</span>
     <span class="n">h</span><span class="o">::</span><span class="kt">Float64</span>
-    <span class="n">TFIChain</span><span class="p">(</span><span class="n">length</span><span class="o">::</span><span class="kt">Int</span><span class="p">;</span> <span class="n">h</span><span class="o">::</span><span class="kt">Real</span><span class="p">)</span> <span class="o">=</span> <span class="n">new</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="kt">Float64</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+    <span class="n">periodic</span><span class="o">::</span><span class="kt">Bool</span>
+    <span class="n">TFI</span><span class="p">(</span><span class="n">size</span><span class="o">::</span><span class="kt">Int</span><span class="o">...</span><span class="p">;</span> <span class="n">h</span><span class="o">::</span><span class="kt">Real</span><span class="p">,</span> <span class="n">periodic</span><span class="o">::</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">=</span> <span class="n">new</span><span class="p">{</span><span class="n">length</span><span class="p">(</span><span class="n">size</span><span class="p">)}(</span><span class="n">size</span><span class="p">,</span> <span class="kt">Float64</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">periodic</span><span class="p">)</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -12127,12 +12192,12 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[70]:</div>
+<div class="prompt output_prompt">Out[375]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>TFIChain</pre>
+<pre>TFI</pre>
 </div>
 
 </div>
@@ -12143,10 +12208,24 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[376]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">TFIChain</span><span class="p">(</span><span class="mi">4</span><span class="p">;</span> <span class="n">h</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">get_bonds</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="n">AbstractModel</span><span class="p">{</span><span class="mi">1</span><span class="p">})</span>
+    <span class="n">nbit</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">size</span>
+    <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">%</span><span class="n">nbit</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">periodic</span> <span class="o">?</span> <span class="n">nbit</span> <span class="o">:</span> <span class="n">nbit</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="n">get_bonds</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="n">AbstractModel</span><span class="p">{</span><span class="mi">2</span><span class="p">})</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">cis</span> <span class="o">=</span> <span class="n">LinearIndices</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">bonds</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Int</span><span class="p">,</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Float64</span><span class="p">}[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">m</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">n</span>
+        <span class="p">(</span><span class="n">i!</span><span class="o">=</span><span class="n">m</span> <span class="o">||</span> <span class="n">model</span><span class="o">.</span><span class="n">periodic</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">push!</span><span class="p">(</span><span class="n">bonds</span><span class="p">,</span> <span class="p">(</span><span class="n">cis</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="n">cis</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]))</span>
+        <span class="p">(</span><span class="n">j!</span><span class="o">=</span><span class="n">n</span> <span class="o">||</span> <span class="n">model</span><span class="o">.</span><span class="n">periodic</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">push!</span><span class="p">(</span><span class="n">bonds</span><span class="p">,</span> <span class="p">(</span><span class="n">cis</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="n">cis</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">%</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">end</span>
+    <span class="n">bonds</span>
+<span class="k">end</span>
 </pre></div>
 
 </div>
@@ -12158,12 +12237,279 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[71]:</div>
+<div class="prompt output_prompt">Out[376]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>TFIChain(4, 0.5)</pre>
+<pre>get_bonds (generic function with 2 methods)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[377]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">hamiltonian</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="n">TFI</span><span class="p">{</span><span class="mi">1</span><span class="p">})</span>
+    <span class="n">nbit</span> <span class="o">=</span> <span class="n">nspin</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">sum</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="kp">in</span> <span class="n">get_bonds</span><span class="p">(</span><span class="n">model</span><span class="p">))</span><span class="o">*</span><span class="mf">0.25</span> <span class="o">+</span>
+    <span class="n">sum</span><span class="p">(</span><span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">i</span><span class="o">=&gt;</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">nbit</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="n">model</span><span class="o">.</span><span class="n">h</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[377]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>hamiltonian (generic function with 2 methods)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[378]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">tfi_model</span> <span class="o">=</span> <span class="n">TFI</span><span class="p">(</span><span class="mi">4</span><span class="p">;</span> <span class="n">h</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">false</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[378]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>TFI{1}((4,), 0.5, false)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[379]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">tfi_h</span> <span class="o">=</span> <span class="n">hamiltonian</span><span class="p">(</span><span class="n">tfi_model</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[379]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">nqubits: 4, datatype: Complex{Float64}</span>
+<span class="ansi-blue-intense-fg ansi-bold">sum</span>
+├─ <span class="ansi-yellow-intense-fg ansi-bold">[scale: 0.25] </span><span class="ansi-blue-intense-fg ansi-bold">sum</span>
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">repeat on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">, </span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ Z gate
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">repeat on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">, </span><span class="ansi-cyan-intense-fg ansi-bold">3</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ Z gate
+│     └─ <span class="ansi-cyan-intense-fg ansi-bold">repeat on (</span><span class="ansi-cyan-intense-fg ansi-bold">3</span><span class="ansi-cyan-intense-fg ansi-bold">, </span><span class="ansi-cyan-intense-fg ansi-bold">4</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│        └─ Z gate
+└─ <span class="ansi-yellow-intense-fg ansi-bold">[scale: 0.25] </span><span class="ansi-blue-intense-fg ansi-bold">sum</span>
+      ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+      │  └─ X gate
+      ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+      │  └─ X gate
+      ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">3</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+      │  └─ X gate
+      └─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">4</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+         └─ X gate
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Get the energy through sampling</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[380]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">ising_energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">bonds</span><span class="p">,</span> <span class="n">basis</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
+    <span class="n">mblocks</span> <span class="o">=</span> <span class="n">gensample</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">basis</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
+    <span class="n">nspin</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">mblocks</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">eng</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="kp">in</span> <span class="n">bonds</span>
+        <span class="n">eng</span> <span class="o">+=</span> <span class="n">mean</span><span class="p">(</span><span class="n">mblocks</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">results</span> <span class="o">.*</span> <span class="n">mblocks</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="n">eng</span><span class="o">/=</span><span class="mi">4</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="o">::</span><span class="n">TFI</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="c"># measuring Z</span>
+    <span class="n">eng</span> <span class="o">=</span> <span class="n">ising_energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">get_bonds</span><span class="p">(</span><span class="n">model</span><span class="p">),</span> <span class="n">Z</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
+    <span class="c"># measuring X</span>
+    <span class="n">mblocks</span> <span class="o">=</span> <span class="n">gensample</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">X</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
+    <span class="n">engx</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">mean</span><span class="o">.</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">results</span> <span class="k">for</span> <span class="n">m</span> <span class="kp">in</span> <span class="n">mblocks</span><span class="p">]))</span>
+    <span class="n">eng</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">h</span><span class="o">*</span><span class="n">engx</span><span class="o">/</span><span class="mi">2</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[380]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>energy (generic function with 2 methods)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[381]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">tfi_model</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[381]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.66818</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Heisenberg-Model">Heisenberg Model<a class="anchor-link" href="#Heisenberg-Model">&#182;</a></h3><p>$H = \sum\limits_{\alpha=x,y,z; i=1}^{N-1} s_i^\alpha s^\alpha_{i+1}$</p>
+<p>where $s^\alpha = \frac 1 2 \sigma^\alpha$ is the spin operator.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[382]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">struct</span> <span class="n">Heisenberg</span><span class="p">{</span><span class="n">D</span><span class="p">}</span> <span class="o">&lt;:</span> <span class="n">AbstractModel</span><span class="p">{</span><span class="n">D</span><span class="p">}</span>
+    <span class="n">size</span><span class="o">::</span><span class="kt">NTuple</span><span class="p">{</span><span class="n">D</span><span class="p">,</span> <span class="kt">Int</span><span class="p">}</span>
+    <span class="n">periodic</span><span class="o">::</span><span class="kt">Bool</span>
+    <span class="n">Heisenberg</span><span class="p">(</span><span class="n">size</span><span class="o">::</span><span class="kt">Int</span><span class="o">...</span><span class="p">;</span> <span class="n">periodic</span><span class="o">::</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">=</span> <span class="n">new</span><span class="p">{</span><span class="n">length</span><span class="p">(</span><span class="n">size</span><span class="p">)}(</span><span class="n">size</span><span class="p">,</span> <span class="n">periodic</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[330]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">heisenberg_ij</span><span class="p">(</span><span class="n">nbit</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span> <span class="n">i</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span> <span class="n">j</span><span class="o">::</span><span class="kt">Int</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">i</span><span class="o">=&gt;</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">j</span><span class="o">=&gt;</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">i</span><span class="o">=&gt;</span><span class="n">Y</span><span class="p">)</span><span class="o">*</span><span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">j</span><span class="o">=&gt;</span><span class="n">Y</span><span class="p">)</span> <span class="o">+</span> <span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">i</span><span class="o">=&gt;</span><span class="n">Z</span><span class="p">)</span><span class="o">*</span><span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">j</span><span class="o">=&gt;</span><span class="n">Z</span><span class="p">)</span>
+<span class="k">function</span> <span class="n">hamiltonian</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="n">Heisenberg</span><span class="p">)</span>
+    <span class="n">nbit</span> <span class="o">=</span> <span class="n">nspin</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">heisenberg_ij</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">get_bonds</span><span class="p">(</span><span class="n">model</span><span class="p">))</span><span class="o">*</span><span class="mf">0.25</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[330]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>hamiltonian (generic function with 2 methods)</pre>
 </div>
 
 </div>
@@ -12184,22 +12530,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[331]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="o">::</span><span class="n">TFIChain</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
-    <span class="c"># measuring Z</span>
-    <span class="n">mblocks</span> <span class="o">=</span> <span class="n">gensample</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">Z</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
-    <span class="kd">local</span> <span class="n">eng</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="kp">in</span> <span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">model</span><span class="o">.</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">eng</span> <span class="o">+=</span> <span class="n">v</span><span class="o">*</span><span class="n">mean</span><span class="p">(</span><span class="n">mblocks</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">results</span> <span class="o">.*</span> <span class="n">mblocks</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
-    <span class="k">end</span>
-    <span class="n">eng</span><span class="o">/=</span><span class="mi">4</span>
-
-    <span class="c"># measuring X</span>
-    <span class="n">mblocks</span> <span class="o">=</span> <span class="n">gensample</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">X</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
-    <span class="n">engx</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">mean</span><span class="o">.</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">results</span> <span class="k">for</span> <span class="n">m</span> <span class="kp">in</span> <span class="n">mblocks</span><span class="p">]))</span>
-    <span class="n">eng</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">h</span><span class="o">*</span><span class="n">engx</span><span class="o">/</span><span class="mi">2</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="o">::</span><span class="n">Heisenberg</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">bonds</span> <span class="o">=</span> <span class="n">get_bonds</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">sum</span><span class="p">(</span><span class="n">basis</span><span class="o">-&gt;</span><span class="n">ising_energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">bonds</span><span class="p">,</span> <span class="n">basis</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">),</span> <span class="p">[</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">])</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -12212,12 +12548,12 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[73]:</div>
+<div class="prompt output_prompt">Out[331]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>energy (generic function with 1 method)</pre>
+<pre>energy (generic function with 2 methods)</pre>
 </div>
 
 </div>
@@ -12228,10 +12564,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="prompt input_prompt">In&nbsp;[332]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">hei_model</span> <span class="o">=</span> <span class="n">Heisenberg</span><span class="p">(</span><span class="mi">4</span><span class="p">;</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">false</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12243,12 +12579,43 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[74]:</div>
+<div class="prompt output_prompt">Out[332]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>-1.1201171875</pre>
+<pre>Heisenberg{1}((4,), false)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[350]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">hei_model</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[350]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.6640625</pre>
 </div>
 
 </div>
@@ -12262,7 +12629,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Build-the-expanded-view">Build the expanded view<a class="anchor-link" href="#Build-the-expanded-view">&#182;</a></h1><p>The expanded view is the equivalent model without qubit reusing, it is used for testing purpose.
+<h1 id="Build-the-expanded-view-and-check-the-energy">Build the expanded view and check the energy<a class="anchor-link" href="#Build-the-expanded-view-and-check-the-energy">&#182;</a></h1><p>The expanded view is the equivalent model without qubit reusing, it is used for testing purpose.
 From this circuit, we are able to obtain the ground state wave function directly.</p>
 <div style="display:inline-block"><img style="float:left", src="images/fourqubit.png"></div>
 </div>
@@ -12270,10 +12637,10 @@ From this circuit, we are able to obtain the ground state wave function directly
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="prompt input_prompt">In&nbsp;[383]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">chem2circuit</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">expand_circuit</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
     <span class="n">nbit</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">collect_blocks</span><span class="p">(</span><span class="n">Measure</span><span class="p">,</span> <span class="n">circuit</span><span class="p">))</span>
     <span class="n">nm</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">nv</span> <span class="o">=</span> <span class="mi">1</span>
@@ -12295,12 +12662,12 @@ From this circuit, we are able to obtain the ground state wave function directly
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[75]:</div>
+<div class="prompt output_prompt">Out[383]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>chem2circuit (generic function with 1 method)</pre>
+<pre>expand_circuit (generic function with 1 method)</pre>
 </div>
 
 </div>
@@ -12311,10 +12678,10 @@ From this circuit, we are able to obtain the ground state wave function directly
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="prompt input_prompt">In&nbsp;[384]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">bigc</span> <span class="o">=</span> <span class="n">chem2circuit</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">c_expand</span> <span class="o">=</span> <span class="n">expand_circuit</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12326,7 +12693,7 @@ From this circuit, we are able to obtain the ground state wave function directly
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[76]:</div>
+<div class="prompt output_prompt">Out[384]:</div>
 
 
 
@@ -12337,50 +12704,62 @@ From this circuit, we are able to obtain the ground state wave function directly
 │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
 │     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │     │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│     │     ├─ rot(X gate, 0.10160904960422874)
-│     │     └─ rot(Z gate, 0.4859598369770371)
+│     │     ├─ rot(X gate, 0.21095863334236697)
+│     │     └─ rot(Z gate, 0.7061513298045752)
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ H gate
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ rot(Z gate, 0.606758675085191)
 │     ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│     │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>X gate
+│     │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(0.8692942974976297)
 │     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │     │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│     │     ├─ rot(X gate, 1.03377538547451)
-│     │     └─ rot(Z gate, -1.1808403229786395)
-│     ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│     │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>Z gate
-│     └─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
-│        └─ rot(X gate, -0.5784343827936468)
+│     │     ├─ rot(X gate, 0.9742930709729192)
+│     │     └─ rot(Z gate, 0.2511950574828521)
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ H gate
+│     └─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│        └─ rot(Z gate, 0.8950395744932531)
 ├─ Concentrator: (2, 4)
 │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
 │     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │     │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│     │     ├─ rot(X gate, 2.592514151789829)
-│     │     └─ rot(Z gate, 0.5505558917069752)
+│     │     ├─ rot(X gate, 0.8280959771285328)
+│     │     └─ rot(Z gate, 0.6397794287466416)
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ H gate
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ rot(Z gate, 0.43658892015653006)
 │     ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│     │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>X gate
+│     │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(0.22277943843476922)
 │     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
 │     │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-│     │     ├─ rot(X gate, 1.3653338409749896)
-│     │     └─ rot(Z gate, -0.6880141254669889)
-│     ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-│     │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>Z gate
-│     └─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
-│        └─ rot(X gate, 1.4370360683411523)
+│     │     ├─ rot(X gate, 0.6583878015555824)
+│     │     └─ rot(Z gate, 0.054800922397594265)
+│     ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│     │  └─ H gate
+│     └─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│        └─ rot(Z gate, 0.6029031531918727)
 └─ Concentrator: (3, 4)
    └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
       ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
       │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-      │     ├─ rot(X gate, 0.9566149749409412)
-      │     └─ rot(Z gate, 0.2027680236221236)
+      │     ├─ rot(X gate, 0.5187383397135643)
+      │     └─ rot(Z gate, 0.34841339767803015)
+      ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+      │  └─ H gate
+      ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+      │  └─ rot(Z gate, 0.7031413016787984)
       ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-      │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>X gate
+      │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(0.5361579854441212)
       ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
       │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
-      │     ├─ rot(X gate, 1.1134033107505663)
-      │     └─ rot(Z gate, 0.7478018770233621)
-      ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
-      │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>Z gate
-      └─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
-         └─ rot(X gate, 0.6852517981066144)
+      │     ├─ rot(X gate, 0.8057911183128879)
+      │     └─ rot(Z gate, 0.37193762663808716)
+      ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+      │  └─ H gate
+      └─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+         └─ rot(Z gate, 0.6136187886652058)
 </pre>
 </div>
 
@@ -12390,28 +12769,14 @@ From this circuit, we are able to obtain the ground state wave function directly
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Construct the hamiltonian using operator arithmatics.</p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In&nbsp;[385]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="s">&quot;&quot;&quot;</span>
-<span class="s">The Hamiltonian of a model.</span>
-<span class="s">&quot;&quot;&quot;</span>
-<span class="k">function</span> <span class="n">hamiltonian</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="n">TFIChain</span><span class="p">)</span>
-    <span class="n">nbit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">length</span>
-    <span class="n">sum</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">nbit</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mf">0.25</span> <span class="o">+</span>
-    <span class="n">sum</span><span class="p">(</span><span class="n">put</span><span class="p">(</span><span class="n">nbit</span><span class="p">,</span> <span class="n">i</span><span class="o">=&gt;</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="n">nbit</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="n">model</span><span class="o">.</span><span class="n">h</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">wave_function</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+    <span class="n">ec</span> <span class="o">=</span> <span class="n">chem2circuit</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+    <span class="n">zero_state</span><span class="p">(</span><span class="n">nqubits</span><span class="p">(</span><span class="n">ec</span><span class="p">))</span> <span class="o">|&gt;</span> <span class="n">ec</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -12424,12 +12789,12 @@ From this circuit, we are able to obtain the ground state wave function directly
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[79]:</div>
+<div class="prompt output_prompt">Out[385]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>hamiltonian</pre>
+<pre>wave_function (generic function with 1 method)</pre>
 </div>
 
 </div>
@@ -12440,10 +12805,11 @@ From this circuit, we are able to obtain the ground state wave function directly
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[386]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="n">hamiltonian</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="nd">@show</span> <span class="n">expect</span><span class="p">(</span><span class="n">tfi_h</span><span class="p">,</span> <span class="n">wave_function</span><span class="p">(</span><span class="n">circuit</span><span class="p">))</span> <span class="o">|&gt;</span> <span class="n">real</span>
+<span class="nd">@show</span> <span class="n">expect</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">(</span><span class="n">hei_model</span><span class="p">),</span> <span class="n">wave_function</span><span class="p">(</span><span class="n">circuit</span><span class="p">))</span> <span class="o">|&gt;</span> <span class="n">real</span><span class="p">;</span>
 </pre></div>
 
 </div>
@@ -12455,7 +12821,199 @@ From this circuit, we are able to obtain the ground state wave function directly
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[80]:</div>
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>expect(tfi_h, wave_function(circuit)) |&gt; real = 0.6680718837003601
+expect(hamiltonian(hei_model), wave_function(circuit)) |&gt; real = 0.643674834586592
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Obtaining-the-ground-state">Obtaining the ground state<a class="anchor-link" href="#Obtaining-the-ground-state">&#182;</a></h2><p>Sequential optimization</p>
+<ol>
+<li>obtain the gradient of one parameter a time $\frac{\partial E_\theta}{\partial \theta} = \frac 1 2 (E_{\theta+\pi/2}-E_{\theta-\pi/2})$</li>
+<li>perform gradient descent update of this parameter $\theta\rightarrow \theta-\alpha \frac{\partial E_\theta}{\partial \theta}$</li>
+<li>sweep all parameters until convergence.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[387]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">fidelity</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">VG</span><span class="p">)</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">zero_state</span><span class="p">(</span><span class="n">nqubits</span><span class="p">(</span><span class="n">circuit</span><span class="p">))</span> <span class="o">|&gt;</span> <span class="n">circuit</span>
+    <span class="n">abs</span><span class="p">(</span><span class="n">statevec</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span><span class="o">&#39;</span> <span class="o">*</span> <span class="n">VG</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[387]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>fidelity (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[388]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">nparameters</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[388]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>21</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[389]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">include</span><span class="p">(</span><span class="s">&quot;Adam.jl&quot;</span><span class="p">)</span>
+<span class="k">using</span> <span class="n">QuAlgorithmZoo</span><span class="o">:</span> <span class="n">Sequence</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[402]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">train_adam</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">VG</span><span class="o">=</span><span class="nb">nothing</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">rots</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">collect_blocks</span><span class="p">(</span><span class="kt">Union</span><span class="p">{</span><span class="n">RotationGate</span><span class="p">,</span> <span class="n">ControlBlock</span><span class="p">{</span><span class="o">&lt;:</span><span class="kt">Any</span><span class="p">,</span> <span class="o">&lt;:</span><span class="n">ShiftGate</span><span class="p">}},</span> <span class="n">circuit</span><span class="p">))</span>
+    <span class="n">c_expanded</span> <span class="o">=</span> <span class="n">expand_circuit</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+    <span class="n">loss_history</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">[]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">(</span><span class="n">rots</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">zero</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">0</span><span class="o">:</span><span class="n">maxiter</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">r</span><span class="p">)</span> <span class="kp">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">rots</span><span class="o">.</span><span class="n">blocks</span><span class="p">)</span>
+            <span class="n">dispatch!</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="nb">π</span><span class="o">/</span><span class="mi">2</span><span class="p">,))</span>
+            <span class="n">E₊</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
+            <span class="n">dispatch!</span><span class="p">(</span><span class="o">-</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="nb">π</span><span class="p">,))</span>
+            <span class="n">E₋</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
+            <span class="n">dispatch!</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="nb">π</span><span class="o">/</span><span class="mi">2</span><span class="p">,))</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">(</span><span class="n">E₊</span> <span class="o">-</span> <span class="n">E₋</span><span class="p">)</span>
+            <span class="n">grad</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span>
+        <span class="k">end</span>
+        <span class="n">update!</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">)</span>
+        <span class="n">dispatch!</span><span class="p">(</span><span class="n">rots</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">push!</span><span class="p">(</span><span class="n">loss_history</span><span class="p">,</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span><span class="o">/</span><span class="n">nspin</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="n">print</span><span class="p">(</span><span class="s">&quot;Iter </span><span class="si">$i</span><span class="s">, E/N = </span><span class="si">$</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[</span><span class="k">end</span><span class="p">])</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="o">!</span><span class="p">(</span><span class="n">VG</span> <span class="n">isa</span> <span class="n">Nothing</span><span class="p">)</span>
+                <span class="n">dispatch!</span><span class="p">(</span><span class="n">c_expanded</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+                <span class="n">fid</span> <span class="o">=</span> <span class="n">fidelity</span><span class="p">(</span><span class="n">c_expanded</span><span class="p">,</span> <span class="n">VG</span><span class="p">)</span>
+                <span class="n">println</span><span class="p">(</span><span class="s">&quot;, fidelity = </span><span class="si">$fid</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">else</span>
+                <span class="n">println</span><span class="p">()</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">loss_history</span><span class="p">,</span> <span class="n">circuit</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[402]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>train_adam (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[403]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">lattice_size</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">twoqubit_circuit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lattice_size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">TFI</span><span class="p">(</span><span class="n">lattice_size</span><span class="p">;</span> <span class="n">h</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">false</span><span class="p">)</span>
+<span class="c">#model = Heisenberg(lattice_size; periodic=false)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">hamiltonian</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[403]:</div>
 
 
 
@@ -12489,10 +13047,14 @@ From this circuit, we are able to obtain the ground state wave function directly
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[81]:</div>
+<div class="prompt input_prompt">In&nbsp;[404]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">expect</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">zero_state</span><span class="p">(</span><span class="n">nqubits</span><span class="p">(</span><span class="n">bigc</span><span class="p">))</span> <span class="o">|&gt;</span> <span class="n">bigc</span><span class="p">)</span> <span class="o">|&gt;</span> <span class="n">real</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># obtain the exact ground state energy</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">eigen</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">|&gt;</span> <span class="kt">Matrix</span><span class="p">)</span>
+<span class="n">EG</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">nspin</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nd">@show</span> <span class="n">EG</span>
+<span class="n">VG</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
 </pre></div>
 
 </div>
@@ -12504,12 +13066,416 @@ From this circuit, we are able to obtain the ground state wave function directly
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[81]:</div>
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>EG = -0.29742315519647605
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[405]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">nparameters</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[405]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>-1.1221441001568155</pre>
+<pre>21</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[421]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">dispatch!</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="o">:</span><span class="n">random</span><span class="p">)</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">circuit</span> <span class="o">=</span> <span class="n">train_adam</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">VG</span><span class="o">=</span><span class="n">VG</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Iter 0, E/N = 0.0726318359375, fidelity = 0.25845579205809155
+Iter 10, E/N = -0.23974609375, fidelity = 0.6896265156498435
+Iter 20, E/N = -0.2664794921875, fidelity = 0.760200799061576
+Iter 30, E/N = -0.2786865234375, fidelity = 0.7791030293220049
+Iter 40, E/N = -0.2747802734375, fidelity = 0.7858415810324807
+Iter 50, E/N = -0.2720947265625, fidelity = 0.8229853040638265
+Iter 60, E/N = -0.2752685546875, fidelity = 0.8136847347968759
+Iter 70, E/N = -0.2801513671875, fidelity = 0.8093543532049662
+Iter 80, E/N = -0.2799072265625, fidelity = 0.7981016468752032
+Iter 90, E/N = -0.2847900390625, fidelity = 0.7999621873574618
+Iter 100, E/N = -0.2757568359375, fidelity = 0.8092786873480131
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[422]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">loss_history</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="mi">0</span><span class="o">:</span><span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">loss_history</span><span class="p">,</span> <span class="n">fill</span><span class="p">(</span><span class="n">EG</span><span class="p">,</span> <span class="n">M</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;QMPS&quot;</span><span class="p">,</span> <span class="s">&quot;Exact&quot;</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;Energy&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[422]:</div>
+
+
+<div class="output_svg output_subarea output_execute_result">
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="400" viewBox="0 0 2400 1600">
+<defs>
+  <clipPath id="clip0300">
+    <rect x="0" y="0" width="2400" height="1600"/>
+  </clipPath>
+</defs>
+<polygon clip-path="url(#clip0300)" points="
+0,1600 2400,1600 2400,0 0,0 
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip0301">
+    <rect x="480" y="0" width="1681" height="1600"/>
+  </clipPath>
+</defs>
+<polygon clip-path="url(#clip0300)" points="
+252.496,1503.47 2321.26,1503.47 2321.26,47.2441 252.496,47.2441 
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<defs>
+  <clipPath id="clip0302">
+    <rect x="252" y="47" width="2070" height="1457"/>
+  </clipPath>
+</defs>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  311.046,1503.47 311.046,47.2441 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  798.962,1503.47 798.962,47.2441 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1286.88,1503.47 1286.88,47.2441 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  1774.79,1503.47 1774.79,47.2441 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  2262.71,1503.47 2262.71,47.2441 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  252.496,1471.83 2321.26,1471.83 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  252.496,1100.58 2321.26,1100.58 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  252.496,729.341 2321.26,729.341 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
+  252.496,358.099 2321.26,358.099 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  252.496,1503.47 2321.26,1503.47 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  252.496,1503.47 252.496,47.2441 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  311.046,1503.47 311.046,1481.63 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  798.962,1503.47 798.962,1481.63 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1286.88,1503.47 1286.88,1481.63 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1774.79,1503.47 1774.79,1481.63 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  2262.71,1503.47 2262.71,1481.63 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  252.496,1471.83 283.528,1471.83 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  252.496,1100.58 283.528,1100.58 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  252.496,729.341 283.528,729.341 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  252.496,358.099 283.528,358.099 
+  "/>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 311.046, 1557.47)" x="311.046" y="1557.47">0</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 798.962, 1557.47)" x="798.962" y="1557.47">25</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1286.88, 1557.47)" x="1286.88" y="1557.47">50</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1774.79, 1557.47)" x="1774.79" y="1557.47">75</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 2262.71, 1557.47)" x="2262.71" y="1557.47">100</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 1489.33)" x="228.496" y="1489.33">-0.3</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 1118.08)" x="228.496" y="1118.08">-0.2</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 746.841)" x="228.496" y="746.841">-0.1</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 375.599)" x="228.496" y="375.599">0.0</text>
+</g>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(-90, 130.096, 775.359)" x="130.096" y="775.359">Energy</text>
+</g>
+<polyline clip-path="url(#clip0302)" style="stroke:#009af9; stroke-width:12; stroke-opacity:1; fill:none" points="
+  311.046,88.4582 330.563,723.359 350.079,995.719 369.596,1094.96 389.113,1079.1 408.629,1138.92 428.146,1211.88 447.663,1263.55 467.179,1279.86 486.696,1246.78 
+  506.213,1248.14 525.729,1268.98 545.246,1329.26 564.762,1330.62 584.279,1317.02 603.796,1300.25 623.312,1320.19 642.829,1368.68 662.346,1331.52 681.862,1337.41 
+  701.379,1347.38 720.896,1363.7 740.412,1343.76 759.929,1354.18 779.445,1380.01 798.962,1410.38 818.479,1380.92 837.995,1360.98 857.512,1360.53 877.029,1407.66 
+  896.545,1392.7 916.062,1375.93 935.579,1378.2 955.095,1399.5 974.612,1370.95 994.128,1364.61 1013.65,1394.51 1033.16,1368.23 1052.68,1399.5 1072.2,1386.36 
+  1091.71,1378.2 1111.23,1388.62 1130.74,1370.95 1150.26,1389.53 1169.78,1371.86 1189.29,1398.59 1208.81,1384.09 1228.33,1399.05 1247.84,1380.47 1267.36,1378.2 
+  1286.88,1368.23 1306.39,1383.19 1325.91,1390.44 1345.43,1395.42 1364.94,1393.16 1384.46,1380.92 1403.98,1401.31 1423.49,1417.63 1443.01,1388.17 1462.53,1419.44 
+  1482.04,1380.01 1501.56,1379.56 1521.08,1394.97 1540.59,1402.67 1560.11,1396.33 1579.63,1394.97 1599.14,1404.03 1618.66,1393.16 1638.18,1401.31 1657.69,1419.89 
+  1677.21,1398.14 1696.73,1376.39 1716.24,1379.11 1735.76,1428.05 1755.28,1390.89 1774.79,1359.62 1794.31,1377.75 1813.83,1416.72 1833.34,1404.94 1852.86,1359.62 
+  1872.38,1397.23 1891.89,1395.87 1911.41,1375.48 1930.93,1415.81 1950.44,1394.51 1969.96,1366.42 1989.48,1375.03 2008.99,1367.78 2028.51,1384.09 2048.03,1383.19 
+  2067.54,1415.36 2087.06,1389.98 2106.58,1398.59 2126.09,1401.31 2145.61,1383.64 2165.13,1403.13 2184.64,1384.55 2204.16,1400.86 2223.68,1390.89 2243.19,1425.78 
+  2262.71,1381.83 
+  "/>
+<polyline clip-path="url(#clip0302)" style="stroke:#e26f46; stroke-width:12; stroke-opacity:1; fill:none" points="
+  311.046,1462.26 330.563,1462.26 350.079,1462.26 369.596,1462.26 389.113,1462.26 408.629,1462.26 428.146,1462.26 447.663,1462.26 467.179,1462.26 486.696,1462.26 
+  506.213,1462.26 525.729,1462.26 545.246,1462.26 564.762,1462.26 584.279,1462.26 603.796,1462.26 623.312,1462.26 642.829,1462.26 662.346,1462.26 681.862,1462.26 
+  701.379,1462.26 720.896,1462.26 740.412,1462.26 759.929,1462.26 779.445,1462.26 798.962,1462.26 818.479,1462.26 837.995,1462.26 857.512,1462.26 877.029,1462.26 
+  896.545,1462.26 916.062,1462.26 935.579,1462.26 955.095,1462.26 974.612,1462.26 994.128,1462.26 1013.65,1462.26 1033.16,1462.26 1052.68,1462.26 1072.2,1462.26 
+  1091.71,1462.26 1111.23,1462.26 1130.74,1462.26 1150.26,1462.26 1169.78,1462.26 1189.29,1462.26 1208.81,1462.26 1228.33,1462.26 1247.84,1462.26 1267.36,1462.26 
+  1286.88,1462.26 1306.39,1462.26 1325.91,1462.26 1345.43,1462.26 1364.94,1462.26 1384.46,1462.26 1403.98,1462.26 1423.49,1462.26 1443.01,1462.26 1462.53,1462.26 
+  1482.04,1462.26 1501.56,1462.26 1521.08,1462.26 1540.59,1462.26 1560.11,1462.26 1579.63,1462.26 1599.14,1462.26 1618.66,1462.26 1638.18,1462.26 1657.69,1462.26 
+  1677.21,1462.26 1696.73,1462.26 1716.24,1462.26 1735.76,1462.26 1755.28,1462.26 1774.79,1462.26 1794.31,1462.26 1813.83,1462.26 1833.34,1462.26 1852.86,1462.26 
+  1872.38,1462.26 1891.89,1462.26 1911.41,1462.26 1930.93,1462.26 1950.44,1462.26 1969.96,1462.26 1989.48,1462.26 2008.99,1462.26 2028.51,1462.26 2048.03,1462.26 
+  2067.54,1462.26 2087.06,1462.26 2106.58,1462.26 2126.09,1462.26 2145.61,1462.26 2165.13,1462.26 2184.64,1462.26 2204.16,1462.26 2223.68,1462.26 2243.19,1462.26 
+  2262.71,1462.26 
+  "/>
+<polygon clip-path="url(#clip0300)" points="
+1867.51,312.204 2249.26,312.204 2249.26,130.764 1867.51,130.764 
+  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
+<polyline clip-path="url(#clip0300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
+  1867.51,312.204 2249.26,312.204 2249.26,130.764 1867.51,130.764 1867.51,312.204 
+  "/>
+<polyline clip-path="url(#clip0300)" style="stroke:#009af9; stroke-width:12; stroke-opacity:1; fill:none" points="
+  1891.51,191.244 2035.51,191.244 
+  "/>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2059.51, 208.744)" x="2059.51" y="208.744">QMPS</text>
+</g>
+<polyline clip-path="url(#clip0300)" style="stroke:#e26f46; stroke-width:12; stroke-opacity:1; fill:none" points="
+  1891.51,251.724 2035.51,251.724 
+  "/>
+<g clip-path="url(#clip0300)">
+<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2059.51, 269.224)" x="2059.51" y="269.224">Exact</text>
+</g>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[423]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">circuit</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[423]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">nqubits: 2, datatype: Complex{Float64}</span>
+<span class="ansi-blue-intense-fg ansi-bold">chain</span>
+├─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, 0.07704615078670439)
+│  │     └─ rot(Z gate, 1.9126587963726118)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 1.1683729798815674)
+│  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(-0.035768834905253795)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, 2.1742560988798867)
+│  │     └─ rot(Z gate, -1.6010494730477072)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, -1.4841550361270974)
+│  └─ Measure{2,1,AbstractBlock}
+├─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, -0.3877006786799756)
+│  │     └─ rot(Z gate, -0.9338857822255419)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 2.182783352938954)
+│  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(0.25304518656007163)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, 0.9082957458769617)
+│  │     └─ rot(Z gate, -1.9420436979852698)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, -0.8952920962789711)
+│  └─ Measure{2,1,AbstractBlock}
+└─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+   │     ├─ rot(X gate, 0.7960753051963408)
+   │     └─ rot(Z gate, 0.19729551473047033)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ H gate
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ rot(Z gate, 2.684665952673796)
+   ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
+   │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(-0.9983654336840248)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+   │     ├─ rot(X gate, 1.9258925449011384)
+   │     └─ rot(Z gate, -0.7526389104264475)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ H gate
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ rot(Z gate, -0.37239572353900163)
+   ├─ Measure{2,1,AbstractBlock}
+   └─ Measure{2,1,AbstractBlock}
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[424]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">parameters</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[424]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>21-element Array{Float64,1}:
+  0.07704615078670439 
+  1.9126587963726118  
+  1.1683729798815674  
+ -0.035768834905253795
+  2.1742560988798867  
+ -1.6010494730477072  
+ -1.4841550361270974  
+ -0.3877006786799756  
+ -0.9338857822255419  
+  2.182783352938954   
+  0.25304518656007163 
+  0.9082957458769617  
+ -1.9420436979852698  
+ -0.8952920962789711  
+  0.7960753051963408  
+  0.19729551473047033 
+  2.684665952673796   
+ -0.9983654336840248  
+  1.9258925449011384  
+ -0.7526389104264475  
+ -0.37239572353900163 </pre>
 </div>
 
 </div>
@@ -12523,38 +13489,69 @@ From this circuit, we are able to obtain the ground state wave function directly
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Obtaining-the-ground-state">Obtaining the ground state<a class="anchor-link" href="#Obtaining-the-ground-state">&#182;</a></h2><p>Sequential optimization</p>
-<ol>
-<li>obtain the gradient of one parameter a time $\frac{\partial E_\theta}{\partial \theta} = \frac 1 2 (E_{\theta+\pi/2}-E_{\theta-\pi/2})$</li>
-<li>perform gradient descent update of this parameter $\theta\rightarrow \theta-\alpha \frac{\partial E_\theta}{\partial \theta}$</li>
-<li>sweep all parameters until convergence.</li>
-</ol>
-
+<h1 id="CMA-ES-training-method">CMA-ES training method<a class="anchor-link" href="#CMA-ES-training-method">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[410]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">train</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
-    <span class="n">rots</span> <span class="o">=</span> <span class="n">collect_blocks</span><span class="p">(</span><span class="n">RotationGate</span><span class="p">,</span> <span class="n">circuit</span><span class="p">)</span>
-    <span class="n">loss_history</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">0</span><span class="o">:</span><span class="n">maxiter</span>
-        <span class="k">for</span> <span class="n">r</span> <span class="kp">in</span> <span class="n">rots</span>
-            <span class="n">r</span><span class="o">.</span><span class="n">theta</span> <span class="o">+=</span> <span class="nb">π</span><span class="o">/</span><span class="mi">2</span>
-            <span class="n">E₊</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
-            <span class="n">r</span><span class="o">.</span><span class="n">theta</span> <span class="o">-=</span> <span class="nb">π</span>
-            <span class="n">E₋</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span>
-            <span class="n">r</span><span class="o">.</span><span class="n">theta</span> <span class="o">+=</span> <span class="nb">π</span><span class="o">/</span><span class="mi">2</span>
-            <span class="n">g</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">(</span><span class="n">E₊</span> <span class="o">-</span> <span class="n">E₋</span><span class="p">)</span>
-            <span class="n">r</span><span class="o">.</span><span class="n">theta</span> <span class="o">-=</span> <span class="n">g</span><span class="o">*</span><span class="n">α</span>
-        <span class="k">end</span>
-        <span class="n">push!</span><span class="p">(</span><span class="n">loss_history</span><span class="p">,</span> <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
-        <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">==</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">println</span><span class="p">(</span><span class="s">&quot;Iter </span><span class="si">$i</span><span class="s">, E/N = </span><span class="si">$</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[</span><span class="k">end</span><span class="p">])</span><span class="s">&quot;</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">include</span><span class="p">(</span><span class="s">&quot;CMAES.jl&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[410]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>populate! (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[413]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">cmaes_train</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">VG</span><span class="o">=</span><span class="nb">nothing</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="k">function</span> <span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">dispatch!</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">energy</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="n">nbatch</span><span class="p">)</span><span class="o">/</span><span class="n">nspin</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
     <span class="k">end</span>
-    <span class="n">loss_history</span><span class="p">,</span> <span class="n">circuit</span>
+    
+    <span class="n">ci</span> <span class="o">=</span> <span class="n">CMAESIter</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">rand</span><span class="p">(</span><span class="n">nparameters</span><span class="p">(</span><span class="n">circuit</span><span class="p">)),</span> <span class="n">num_offsprings</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">num_parents</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">loss_history</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="kp">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ci</span><span class="p">)</span>
+        <span class="n">push!</span><span class="p">(</span><span class="n">loss_history</span><span class="p">,</span> <span class="n">best</span><span class="p">(</span><span class="n">info</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="n">print</span><span class="p">(</span><span class="s">&quot;Iter </span><span class="si">$i</span><span class="s">, E/N = </span><span class="si">$</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[</span><span class="k">end</span><span class="p">])</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">fid</span> <span class="o">=</span> <span class="n">fidelity</span><span class="p">(</span><span class="n">circuit</span> <span class="o">|&gt;</span> <span class="n">expand_circuit</span><span class="p">,</span> <span class="n">VG</span><span class="p">)</span>
+            <span class="n">println</span><span class="p">(</span><span class="n">VG</span> <span class="n">isa</span> <span class="n">Nothing</span> <span class="o">?</span> <span class="s">&quot;&quot;</span> <span class="o">:</span> <span class="s">&quot;, fidelity = </span><span class="si">$</span><span class="p">(</span><span class="n">fid</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">end</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">&gt;=</span><span class="n">maxiter</span>
+            <span class="k">return</span> <span class="n">loss_history</span><span class="p">,</span> <span class="n">circuit</span>
+        <span class="k">else</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -12567,12 +13564,12 @@ From this circuit, we are able to obtain the ground state wave function directly
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[90]:</div>
+<div class="prompt output_prompt">Out[413]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>train (generic function with 1 method)</pre>
+<pre>cmaes_train (generic function with 1 method)</pre>
 </div>
 
 </div>
@@ -12583,11 +13580,10 @@ From this circuit, we are able to obtain the ground state wave function directly
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[91]:</div>
+<div class="prompt input_prompt">In&nbsp;[425]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">dispatch!</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="o">:</span><span class="n">random</span><span class="p">)</span>
-<span class="n">loss_history</span><span class="p">,</span> <span class="n">circuit</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">);</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">cmaes_train</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">model</span><span class="p">;</span> <span class="n">VG</span><span class="o">=</span><span class="n">VG</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">2048</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -12602,17 +13598,16 @@ From this circuit, we are able to obtain the ground state wave function directly
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Iter 0, E/N = 0.0445556640625
-Iter 10, E/N = -0.083251953125
-Iter 20, E/N = -0.1195068359375
-Iter 30, E/N = -0.1795654296875
-Iter 40, E/N = -0.264892578125
-Iter 50, E/N = -0.2763671875
-Iter 60, E/N = -0.2813720703125
-Iter 70, E/N = -0.2725830078125
-Iter 80, E/N = -0.2779541015625
-Iter 90, E/N = -0.27685546875
-Iter 100, E/N = -0.27783203125
+<pre>Iter 10, E/N = -0.224365234375, fidelity = 0.4016444442803153
+Iter 20, E/N = -0.2154541015625, fidelity = 0.5194804752680072
+Iter 30, E/N = -0.2681884765625, fidelity = 0.607816455992811
+Iter 40, E/N = -0.26885986328125, fidelity = 0.7720899526912559
+Iter 50, E/N = -0.279296875, fidelity = 0.7633870627205673
+Iter 60, E/N = -0.27374267578125, fidelity = 0.8302842081424706
+Iter 70, E/N = -0.279541015625, fidelity = 0.7622259576741348
+Iter 80, E/N = -0.27960205078125, fidelity = 0.8032809474897772
+Iter 90, E/N = -0.28082275390625, fidelity = 0.7922344071776908
+Iter 100, E/N = -0.2821044921875, fidelity = 0.7946279987623526
 </pre>
 </div>
 </div>
@@ -12623,12 +13618,10 @@ Iter 100, E/N = -0.27783203125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="prompt input_prompt">In&nbsp;[426]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="c"># obtain the exact ground state energy</span>
-<span class="n">EG</span> <span class="o">=</span> <span class="n">eigen</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">|&gt;</span> <span class="kt">Matrix</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="nd">@show</span> <span class="n">EG</span><span class="o">/</span><span class="n">nspin</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">circuit</span>
 </pre></div>
 
 </div>
@@ -12640,21 +13633,75 @@ Iter 100, E/N = -0.27783203125
 
 
 <div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EG / nspin = -0.29742315519647605
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-<div class="prompt output_prompt">Out[92]:</div>
+<div class="prompt output_prompt">Out[426]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>-0.29742315519647605</pre>
+<pre><span class="ansi-cyan-fg">nqubits: 2, datatype: Complex{Float64}</span>
+<span class="ansi-blue-intense-fg ansi-bold">chain</span>
+├─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, -4.167021865728496)
+│  │     └─ rot(Z gate, 1.0644605325722671)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 1.2320907193580422)
+│  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(-0.00028005810715180796)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, 0.2699078188265768)
+│  │     └─ rot(Z gate, 3.3900742879873613)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 1.7862479926101784)
+│  └─ Measure{2,1,AbstractBlock}
+├─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, 3.893420214459148)
+│  │     └─ rot(Z gate, -0.035473608664978167)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, 3.079777822550059)
+│  ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(-0.22295634214807386)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+│  │     ├─ rot(X gate, 2.986370449844123)
+│  │     └─ rot(Z gate, 4.690447909085334)
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ H gate
+│  ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+│  │  └─ rot(Z gate, -2.0210786251649675)
+│  └─ Measure{2,1,AbstractBlock}
+└─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+   │     ├─ rot(X gate, -0.4795439065867406)
+   │     └─ rot(Z gate, -5.40022817865976)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ H gate
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ rot(Z gate, -1.1128380852547572)
+   ├─ <span class="ansi-red-intense-fg ansi-bold">control(</span><span class="ansi-red-intense-fg ansi-bold">1</span><span class="ansi-red-intense-fg ansi-bold">)</span>
+   │  └─ <span class="ansi-white-intense-fg ansi-bold">(2,)</span>shift(4.469973713686416)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ <span class="ansi-blue-intense-fg ansi-bold">chain</span>
+   │     ├─ rot(X gate, -2.237721876680651)
+   │     └─ rot(Z gate, 2.190487959624729)
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ H gate
+   ├─ <span class="ansi-cyan-intense-fg ansi-bold">put on (</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-cyan-intense-fg ansi-bold">)</span>
+   │  └─ rot(Z gate, -0.665311771966154)
+   ├─ Measure{2,1,AbstractBlock}
+   └─ Measure{2,1,AbstractBlock}
+</pre>
 </div>
 
 </div>
@@ -12665,10 +13712,10 @@ Iter 100, E/N = -0.27783203125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[109]:</div>
+<div class="prompt input_prompt">In&nbsp;[427]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="mi">0</span><span class="o">:</span><span class="mi">100</span><span class="p">,</span> <span class="p">[</span><span class="n">loss_history</span><span class="p">,</span> <span class="n">fill</span><span class="p">(</span><span class="n">EG</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">101</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;QMPS&quot;</span><span class="p">,</span> <span class="s">&quot;Exact&quot;</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;Energy&quot;</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">parameters</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12680,169 +13727,33 @@ Iter 100, E/N = -0.27783203125
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[109]:</div>
+<div class="prompt output_prompt">Out[427]:</div>
 
 
-<div class="output_svg output_subarea output_execute_result">
-<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="400" viewBox="0 0 2400 1600">
-<defs>
-  <clipPath id="clip3300">
-    <rect x="0" y="0" width="2400" height="1600"/>
-  </clipPath>
-</defs>
-<polygon clip-path="url(#clip3300)" points="
-0,1600 2400,1600 2400,0 0,0 
-  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
-<defs>
-  <clipPath id="clip3301">
-    <rect x="480" y="0" width="1681" height="1600"/>
-  </clipPath>
-</defs>
-<polygon clip-path="url(#clip3300)" points="
-252.496,1503.47 2321.26,1503.47 2321.26,47.2441 252.496,47.2441 
-  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
-<defs>
-  <clipPath id="clip3302">
-    <rect x="252" y="47" width="2070" height="1457"/>
-  </clipPath>
-</defs>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  311.046,1503.47 311.046,47.2441 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  798.962,1503.47 798.962,47.2441 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  1286.88,1503.47 1286.88,47.2441 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  1774.79,1503.47 1774.79,47.2441 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  2262.71,1503.47 2262.71,47.2441 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  252.496,1472.61 2321.26,1472.61 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  252.496,1070.89 2321.26,1070.89 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  252.496,669.169 2321.26,669.169 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#000000; stroke-width:2; stroke-opacity:0.1; fill:none" points="
-  252.496,267.448 2321.26,267.448 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  252.496,1503.47 2321.26,1503.47 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  252.496,1503.47 252.496,47.2441 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  311.046,1503.47 311.046,1481.63 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  798.962,1503.47 798.962,1481.63 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  1286.88,1503.47 1286.88,1481.63 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  1774.79,1503.47 1774.79,1481.63 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  2262.71,1503.47 2262.71,1481.63 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  252.496,1472.61 283.528,1472.61 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  252.496,1070.89 283.528,1070.89 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  252.496,669.169 283.528,669.169 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  252.496,267.448 283.528,267.448 
-  "/>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 311.046, 1557.47)" x="311.046" y="1557.47">0</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 798.962, 1557.47)" x="798.962" y="1557.47">25</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1286.88, 1557.47)" x="1286.88" y="1557.47">50</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 1774.79, 1557.47)" x="1774.79" y="1557.47">75</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:middle;" transform="rotate(0, 2262.71, 1557.47)" x="2262.71" y="1557.47">100</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 1490.11)" x="228.496" y="1490.11">-0.3</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 1088.39)" x="228.496" y="1088.39">-0.2</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 686.669)" x="228.496" y="686.669">-0.1</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:end;" transform="rotate(0, 228.496, 284.948)" x="228.496" y="284.948">0.0</text>
-</g>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:66px; text-anchor:middle;" transform="rotate(-90, 130.096, 775.359)" x="130.096" y="775.359">Energy</text>
-</g>
-<polyline clip-path="url(#clip3302)" style="stroke:#009af9; stroke-width:12; stroke-opacity:1; fill:none" points="
-  311.046,88.4582 330.563,198.304 350.079,263.034 369.596,336.592 389.113,408.678 408.629,433.197 428.146,489.101 447.663,531.764 467.179,520.976 486.696,578.841 
-  506.213,601.889 525.729,641.119 545.246,628.37 564.762,611.206 584.279,685.744 603.796,681.331 623.312,664.167 642.829,724.975 662.346,727.917 681.862,743.609 
-  701.379,747.533 720.896,774.504 740.412,789.215 759.929,786.273 779.445,780.879 798.962,840.215 818.479,895.138 837.995,886.311 857.512,960.359 877.029,982.916 
-  896.545,988.801 916.062,1053.04 935.579,1137.39 955.095,1132.48 974.612,1151.61 994.128,1190.35 1013.65,1196.72 1033.16,1248.21 1052.68,1293.82 1072.2,1277.15 
-  1091.71,1331.58 1111.23,1292.35 1130.74,1320.79 1150.26,1339.42 1169.78,1355.12 1189.29,1339.91 1208.81,1355.61 1228.33,1324.22 1247.84,1332.56 1267.36,1361.98 
-  1286.88,1377.67 1306.39,1337.95 1325.91,1338.44 1345.43,1372.28 1364.94,1347.76 1384.46,1378.16 1403.98,1423.28 1423.49,1386.99 1443.01,1355.61 1462.53,1400.72 
-  1482.04,1397.78 1501.56,1379.64 1521.08,1354.14 1540.59,1361 1560.11,1360.02 1579.63,1391.9 1599.14,1353.65 1618.66,1348.74 1638.18,1388.95 1657.69,1395.33 
-  1677.21,1362.47 1696.73,1365.41 1716.24,1388.46 1735.76,1346.78 1755.28,1392.88 1774.79,1385.52 1794.31,1411.51 1813.83,1380.13 1833.34,1373.75 1852.86,1399.25 
-  1872.38,1384.05 1891.89,1381.11 1911.41,1374.73 1930.93,1371.3 1950.44,1355.61 1969.96,1365.91 1989.48,1412.49 2008.99,1392.39 2028.51,1383.07 2048.03,1377.18 
-  2067.54,1379.64 2087.06,1368.36 2106.58,1402.68 2126.09,1396.31 2145.61,1382.09 2165.13,1378.66 2184.64,1375.22 2204.16,1377.67 2223.68,1387.97 2243.19,1390.91 
-  2262.71,1383.56 
-  "/>
-<polyline clip-path="url(#clip3302)" style="stroke:#e26f46; stroke-width:12; stroke-opacity:1; fill:none" points="
-  311.046,1462.26 330.563,1462.26 350.079,1462.26 369.596,1462.26 389.113,1462.26 408.629,1462.26 428.146,1462.26 447.663,1462.26 467.179,1462.26 486.696,1462.26 
-  506.213,1462.26 525.729,1462.26 545.246,1462.26 564.762,1462.26 584.279,1462.26 603.796,1462.26 623.312,1462.26 642.829,1462.26 662.346,1462.26 681.862,1462.26 
-  701.379,1462.26 720.896,1462.26 740.412,1462.26 759.929,1462.26 779.445,1462.26 798.962,1462.26 818.479,1462.26 837.995,1462.26 857.512,1462.26 877.029,1462.26 
-  896.545,1462.26 916.062,1462.26 935.579,1462.26 955.095,1462.26 974.612,1462.26 994.128,1462.26 1013.65,1462.26 1033.16,1462.26 1052.68,1462.26 1072.2,1462.26 
-  1091.71,1462.26 1111.23,1462.26 1130.74,1462.26 1150.26,1462.26 1169.78,1462.26 1189.29,1462.26 1208.81,1462.26 1228.33,1462.26 1247.84,1462.26 1267.36,1462.26 
-  1286.88,1462.26 1306.39,1462.26 1325.91,1462.26 1345.43,1462.26 1364.94,1462.26 1384.46,1462.26 1403.98,1462.26 1423.49,1462.26 1443.01,1462.26 1462.53,1462.26 
-  1482.04,1462.26 1501.56,1462.26 1521.08,1462.26 1540.59,1462.26 1560.11,1462.26 1579.63,1462.26 1599.14,1462.26 1618.66,1462.26 1638.18,1462.26 1657.69,1462.26 
-  1677.21,1462.26 1696.73,1462.26 1716.24,1462.26 1735.76,1462.26 1755.28,1462.26 1774.79,1462.26 1794.31,1462.26 1813.83,1462.26 1833.34,1462.26 1852.86,1462.26 
-  1872.38,1462.26 1891.89,1462.26 1911.41,1462.26 1930.93,1462.26 1950.44,1462.26 1969.96,1462.26 1989.48,1462.26 2008.99,1462.26 2028.51,1462.26 2048.03,1462.26 
-  2067.54,1462.26 2087.06,1462.26 2106.58,1462.26 2126.09,1462.26 2145.61,1462.26 2165.13,1462.26 2184.64,1462.26 2204.16,1462.26 2223.68,1462.26 2243.19,1462.26 
-  2262.71,1462.26 
-  "/>
-<polygon clip-path="url(#clip3300)" points="
-1867.51,312.204 2249.26,312.204 2249.26,130.764 1867.51,130.764 
-  " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
-<polyline clip-path="url(#clip3300)" style="stroke:#000000; stroke-width:4; stroke-opacity:1; fill:none" points="
-  1867.51,312.204 2249.26,312.204 2249.26,130.764 1867.51,130.764 1867.51,312.204 
-  "/>
-<polyline clip-path="url(#clip3300)" style="stroke:#009af9; stroke-width:12; stroke-opacity:1; fill:none" points="
-  1891.51,191.244 2035.51,191.244 
-  "/>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2059.51, 208.744)" x="2059.51" y="208.744">QMPS</text>
-</g>
-<polyline clip-path="url(#clip3300)" style="stroke:#e26f46; stroke-width:12; stroke-opacity:1; fill:none" points="
-  1891.51,251.724 2035.51,251.724 
-  "/>
-<g clip-path="url(#clip3300)">
-<text style="fill:#000000; fill-opacity:1; font-family:Arial,Helvetica Neue,Helvetica,sans-serif; font-size:48px; text-anchor:start;" transform="rotate(0, 2059.51, 269.224)" x="2059.51" y="269.224">Exact</text>
-</g>
-</svg>
 
+<div class="output_text output_subarea output_execute_result">
+<pre>21-element Array{Float64,1}:
+ -4.167021865728496     
+  1.0644605325722671    
+  1.2320907193580422    
+ -0.00028005810715180796
+  0.2699078188265768    
+  3.3900742879873613    
+  1.7862479926101784    
+  3.893420214459148     
+ -0.035473608664978167  
+  3.079777822550059     
+ -0.22295634214807386   
+  2.986370449844123     
+  4.690447909085334     
+ -2.0210786251649675    
+ -0.4795439065867406    
+ -5.40022817865976      
+ -1.1128380852547572    
+  4.469973713686416     
+ -2.237721876680651     
+  2.190487959624729     
+ -0.665311771966154     </pre>
 </div>
 
 </div>
@@ -12862,7 +13773,7 @@ Iter 100, E/N = -0.27783203125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[428]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">EV</span> <span class="o">=</span> <span class="n">eigen</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">|&gt;</span> <span class="kt">Matrix</span><span class="p">)</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
@@ -12877,7 +13788,7 @@ Iter 100, E/N = -0.27783203125
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[23]:</div>
+<div class="prompt output_prompt">Out[428]:</div>
 
 
 
@@ -12909,7 +13820,7 @@ Iter 100, E/N = -0.27783203125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[429]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">ArrayReg</span><span class="p">(</span><span class="n">EV</span><span class="p">)</span>
@@ -12924,7 +13835,7 @@ Iter 100, E/N = -0.27783203125
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[32]:</div>
+<div class="prompt output_prompt">Out[429]:</div>
 
 
 
@@ -12941,7 +13852,7 @@ Iter 100, E/N = -0.27783203125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[430]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">focus!</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|&gt;</span> <span class="n">ρ</span>
@@ -12956,7 +13867,7 @@ Iter 100, E/N = -0.27783203125
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[33]:</div>
+<div class="prompt output_prompt">Out[430]:</div>
 
 
 
@@ -12973,7 +13884,7 @@ Iter 100, E/N = -0.27783203125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[431]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">entropy</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="n">sum</span><span class="p">(</span><span class="n">spectrum</span> <span class="o">.*</span> <span class="n">log</span><span class="o">.</span><span class="p">(</span><span class="n">spectrum</span><span class="p">))</span><span class="o">/</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -12988,7 +13899,7 @@ Iter 100, E/N = -0.27783203125
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[39]:</div>
+<div class="prompt output_prompt">Out[431]:</div>
 
 
 
@@ -13004,7 +13915,7 @@ Iter 100, E/N = -0.27783203125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[432]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">entropy</span><span class="p">(</span><span class="n">eigen</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -13019,7 +13930,7 @@ Iter 100, E/N = -0.27783203125
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[40]:</div>
+<div class="prompt output_prompt">Out[432]:</div>
 
 
 
