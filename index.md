@@ -9,5 +9,5 @@ layout: home
 
 ## 007's Code Base
 
-> [Solving TFI model with only 2 qubits - the 幺 simulation](TwoQubit-VQE.html)
-> [Quantum Circuit ABC](qc-abc.html)
+* [Solving TFI model with only 2 qubits - the 幺 simulation](TwoQubit-VQE.html)
+* [Quantum Circuit ABC](qc-abc.html)
