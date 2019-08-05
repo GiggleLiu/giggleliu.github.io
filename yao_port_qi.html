@@ -12000,7 +12000,7 @@ On the other side, most operations in <code>QI</code> are defined on <strong>(de
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="s">&quot;&quot;&quot;</span>
@@ -12008,7 +12008,7 @@ On the other side, most operations in <code>QI</code> are defined on <strong>(de
 <span class="s">`nbit_env` decides how many qubits in environment,</span>
 <span class="s">which is related to the entropy.</span>
 <span class="s">&quot;&quot;&quot;</span>
-<span class="k">function</span> <span class="n">purify</span><span class="p">(</span><span class="n">r</span><span class="o">::</span><span class="n">DensityMatrix</span><span class="p">{</span><span class="n">B</span><span class="p">};</span> <span class="n">nbit_env</span><span class="o">::</span><span class="kt">Int</span><span class="o">=</span><span class="n">nactive</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="n">where</span> <span class="n">B</span>
+<span class="k">function</span> <span class="n">purify</span><span class="p">(</span><span class="n">r</span><span class="o">::</span><span class="n">Yao</span><span class="o">.</span><span class="n">DensityMatrix</span><span class="p">{</span><span class="n">B</span><span class="p">};</span> <span class="n">nbit_env</span><span class="o">::</span><span class="kt">Int</span><span class="o">=</span><span class="n">nactive</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="n">where</span> <span class="n">B</span>
     <span class="n">Ne</span> <span class="o">=</span> <span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">nbit_env</span>
     <span class="n">Ns</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">state</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">similar</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">state</span><span class="p">,</span><span class="n">Ns</span><span class="p">,</span><span class="n">Ne</span><span class="p">,</span><span class="n">B</span><span class="p">)</span>
@@ -12029,15 +12029,14 @@ On the other side, most operations in <code>QI</code> are defined on <strong>(de
 
 
 <div class="output_area">
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[12]:</div>
 
-<div class="output_subarea output_text output_error">
-<pre>
-UndefVarError: DensityMatrix not defined
 
-Stacktrace:
- [1] top-level scope at In[4]:1</pre>
+
+<div class="output_text output_subarea output_execute_result">
+<pre>purify</pre>
 </div>
+
 </div>
 
 </div>
@@ -12046,7 +12045,7 @@ Stacktrace:
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="c"># e.g. purify a state and recover it</span>
@@ -12064,15 +12063,14 @@ Stacktrace:
 
 
 <div class="output_area">
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[13]:</div>
 
-<div class="output_subarea output_text output_error">
-<pre>
-UndefVarError: purify not defined
 
-Stacktrace:
- [1] top-level scope at In[5]:3</pre>
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-intense-fg ansi-bold">Test Passed</span></pre>
 </div>
+
 </div>
 
 </div>
