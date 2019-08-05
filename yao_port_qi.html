@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Porting</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>yao_port_qi</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11787,7 +11787,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="overview">overview<a class="anchor-link" href="#overview">&#182;</a></h1><p><a href="https://github.com/QuantumBFS/Yao.jl"><code>Yao</code></a> is a powerful tool for quantum circuit based simulation, but it does not support many density matrix related operations. This is why we need to port <code>Yao.jl</code> with <a href="https://github.com/QuantumBFS/QuantumInformation.jl"><code>QuantumInformation</code> (<code>QI</code>)</a> sometimes (e.g. for computing entanglement entropy).</p>
+<h1 id="overview">overview<a class="anchor-link" href="#overview">&#182;</a></h1><p><a href="https://github.com/QuantumBFS/Yao.jl"><code>Yao</code></a> is a powerful tool for quantum circuit based simulation, but it does not support many density matrix related operations. This is why we need to port <code>Yao.jl</code> with <a href="https://github.com/QuantumBFS/QuantumInformation.jl"><code>QuantumInformation (QI)</code></a> sometimes (e.g. for computing entanglement entropy).</p>
 <h3 id="Yao-provides"><code>Yao</code> provides<a class="anchor-link" href="#Yao-provides">&#182;</a></h3><ul>
 <li>high performance quantum circuit based simulation<ul>
 <li>parameter management</li>
@@ -11800,7 +11800,7 @@ div#notebook {
 <li><a href="https://github.com/QuantumBFS/CuYao.jl">GPU support</a></li>
 </ul>
 <h3 id="QI-provides"><code>QI</code> provides<a class="anchor-link" href="#QI-provides">&#182;</a></h3><ul>
-<li>Entropy</li>
+<li>Compute entropy from density matrices</li>
 <li>Quantum channels, four types of channel representations<ul>
 <li>Kraus Operator</li>
 <li>Super operator</li>
@@ -11818,13 +11818,13 @@ div#notebook {
 <li>JS-distance</li>
 </ul>
 </li>
-<li>Measure Entanglement<ul>
+<li>Compute the amount of entanglement<ul>
 <li>negativity</li>
 <li>positive partial trace</li>
 <li>concurrence</li>
-<li>POVM measurements</li>
 </ul>
 </li>
+<li>POVM measurements</li>
 </ul>
 
 </div>
@@ -11832,7 +11832,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">Yao</span><span class="p">,</span> <span class="n">Yao</span><span class="o">.</span><span class="n">ConstGate</span>
@@ -11842,8 +11842,9 @@ div#notebook {
 
 <span class="c"># patches to make life easier</span>
 
-<span class="c"># obtain matrix from Yao</span>
+<span class="c"># obtaining matrix from Yao.DensityMatrix{1}, `1` is the batch size.</span>
 <span class="n">LinearAlgebra</span><span class="o">.</span><span class="kt">Matrix</span><span class="p">(</span><span class="n">d</span><span class="o">::</span><span class="n">DensityMatrix</span><span class="p">{</span><span class="mi">1</span><span class="p">})</span> <span class="o">=</span> <span class="n">dropdims</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c"># obtaining Dense Matrix of a block</span>
 <span class="n">LinearAlgebra</span><span class="o">.</span><span class="kt">Matrix</span><span class="p">(</span><span class="n">blk</span><span class="o">::</span><span class="n">AbstractBlock</span><span class="p">)</span> <span class="o">=</span> <span class="kt">Matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">blk</span><span class="p">))</span>
 
 <span class="c"># exchange system and environment qubits</span>
@@ -11861,7 +11862,7 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[12]:</div>
 
 
 
@@ -11880,23 +11881,29 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Reduced-density-matrix-in-Yao">Reduced density matrix in Yao<a class="anchor-link" href="#Reduced-density-matrix-in-Yao">&#182;</a></h2><p>The memory layout of <code>Yao</code> register and <code>QI</code> ket are same, except</p>
+<h2 id="Obtain-reduced-density-matrices-in-Yao">Obtain reduced density matrices in Yao<a class="anchor-link" href="#Obtain-reduced-density-matrices-in-Yao">&#182;</a></h2><p>The memory layout of <code>Yao</code> register and <code>QI</code> ket are similar, their basis are both <a href="https://en.wikipedia.org/wiki/Endianness">little endian</a>, despite they have different representation powers</p>
 <ul>
 <li><code>Yao</code> support batch,</li>
-<li><code>Yao</code> does not have much operations defined on density matrices, but purified states with environment,</li>
 <li><code>QI</code> is not limited to qubits.</li>
 </ul>
-<p>Most operations in <code>QI</code> are defined on (density) matrices, we can easily obtain them in <code>Yao</code></p>
+<p><code>Yao</code> does not have much operations defined on density matrices, but purified states with environment,
+On the other side, most operations in <code>QI</code> are defined on <strong>(density) matrices</strong>, they can be easily obtained in <code>Yao</code>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">QI</span><span class="o">.</span><span class="n">ket</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="n">≈</span> <span class="n">Yao</span><span class="o">.</span><span class="n">product_state</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">state</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># construct a product state, notice the indexing in `QI` starts from `1`</span>
+<span class="nd">@test</span> <span class="n">QI</span><span class="o">.</span><span class="n">ket</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="n">≈</span> <span class="n">statevec</span><span class="p">(</span><span class="n">Yao</span><span class="o">.</span><span class="n">ArrayReg</span><span class="p">(</span><span class="n">bit</span><span class="s">&quot;0010&quot;</span><span class="p">))</span>
+
+<span class="c"># join two registers, notice little endian convension is used here.</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">Yao</span><span class="o">.:</span><span class="n">⊗</span><span class="p">(</span><span class="n">Yao</span><span class="o">.</span><span class="n">ArrayReg</span><span class="p">(</span><span class="n">bit</span><span class="s">&quot;10&quot;</span><span class="p">),</span> <span class="n">Yao</span><span class="o">.</span><span class="n">ArrayReg</span><span class="p">(</span><span class="n">bit</span><span class="s">&quot;11&quot;</span><span class="p">))</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">QI</span><span class="o">.:</span><span class="n">⊗</span><span class="p">(</span><span class="n">QI</span><span class="o">.</span><span class="n">ket</span><span class="p">(</span><span class="mb">0b10</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">),</span> <span class="n">QI</span><span class="o">.</span><span class="n">ket</span><span class="p">(</span><span class="mb">0b11</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">))</span>
+<span class="nd">@test</span> <span class="n">statevec</span><span class="p">(</span><span class="n">reg</span><span class="p">)</span> <span class="n">≈</span> <span class="n">v</span>
 </pre></div>
 
 </div>
@@ -11908,12 +11915,12 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[2]:</div>
+<div class="prompt output_prompt">Out[15]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>true</pre>
+<pre><span class="ansi-green-intense-fg ansi-bold">Test Passed</span></pre>
 </div>
 
 </div>
@@ -11927,11 +11934,13 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">reg2dm</span><span class="p">(</span><span class="n">reg</span><span class="o">::</span><span class="n">ArrayReg</span><span class="p">{</span><span class="mi">1</span><span class="p">})</span> <span class="o">=</span> <span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">ρ</span> <span class="o">|&gt;</span> <span class="kt">Matrix</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># convert a Yao register to density matrix in QI</span>
+<span class="n">reg2dm</span><span class="p">(</span><span class="n">reg</span><span class="o">::</span><span class="n">ArrayReg</span><span class="p">{</span><span class="mi">1</span><span class="p">})</span> <span class="o">=</span> <span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">ρ</span> <span class="o">|&gt;</span> <span class="kt">Matrix</span>
 
+<span class="c"># e.g. obtain a reduced denstiy matrix for subsystem 1,2,3,4</span>
 <span class="n">reg</span> <span class="o">=</span> <span class="n">rand_state</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">freg</span> <span class="o">=</span> <span class="n">focus!</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="mi">1</span><span class="o">:</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">reg2dm</span><span class="p">(</span><span class="n">freg</span><span class="p">)</span>  <span class="c"># reduced denstiy matrix for subsystem 1,2,3,4</span>
+<span class="n">reg2dm</span><span class="p">(</span><span class="n">freg</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11949,22 +11958,22 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>16×16 Array{Complex{Float64},2}:
-   0.0647739+0.0im          …  -0.00773069+0.00217625im 
-  0.00698705+0.00384015im       0.00167388-0.00547139im 
-   0.0025408-0.00368606im      -0.00333174-0.00622722im 
- -0.00316443+0.00471299im       -0.0102685+0.00260497im 
- -0.00640305+0.00737208im       0.00689949+0.00938752im 
- -0.00905665+0.00922202im   …   0.00583084+0.00205973im 
- -0.00240826-0.00756307im       0.00695523+0.00180452im 
-  -0.0052859+0.00376714im      -0.00250336-0.010175im   
- -0.00526666+0.00369415im      -0.00431864-0.00462939im 
- -0.00170647+0.000770797im     -0.00627782-0.0012029im  
-  -0.0150265+0.00946378im   …  -0.00857432-0.00213534im 
-  0.00670313-0.00216273im       -0.0107815+0.00168994im 
-  0.00523405+0.00848204im      -0.00129836+0.00329419im 
-  -0.0037553+0.00480233im       0.00352073+0.000968651im
- 0.000232522+0.0016261im       -0.00486611-0.00301591im 
- -0.00773069-0.00217625im   …    0.0676498+0.0im        </pre>
+    0.0694965+0.0im          …    0.00990767+0.00273993im 
+  -0.00140868-0.00135126im        0.00498983+0.00391338im 
+   0.00124821-0.0167826im        -0.00504358-0.00642432im 
+  -0.00550133+0.00948581im        0.00201003+0.0118229im  
+   0.00238399-0.000281458im      -0.00131024-0.00154382im 
+    0.0066519+0.00631517im   …   -0.00128772-0.00078724im 
+ -0.000849583-0.00724318im        -0.0177708-0.00270499im 
+   0.00651776-0.00161922im        0.00430379-0.0119549im  
+   -0.0005556+0.00441672im       0.000655296-0.00481757im 
+   0.00522758+0.00201403im        0.00031928-0.000830761im
+  -0.00188719+0.00176303im   …     -0.010545+0.00584796im 
+   -0.0089681-0.00886723im       -0.00157264+0.00300378im 
+   0.00402196+0.0118916im       -0.000717311-0.00463897im 
+  -0.00250791-0.00352043im        -0.0159176-0.0018802im  
+  -0.00509118-0.00855111im        0.00351297+0.00304246im 
+   0.00990767-0.00273993im   …     0.0725617+0.0im        </pre>
 </div>
 
 </div>
@@ -11972,13 +11981,27 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One can also convert a density matrix to a a quantum state through <strong>purification</strong></p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="c"># get a purification of target density matrix</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">get a purification of target density matrix,</span>
+<span class="s">`nbit_env` decides how many qubits in environment,</span>
+<span class="s">which is related to the entropy.</span>
+<span class="s">&quot;&quot;&quot;</span>
 <span class="k">function</span> <span class="n">purify</span><span class="p">(</span><span class="n">r</span><span class="o">::</span><span class="n">DensityMatrix</span><span class="p">{</span><span class="n">B</span><span class="p">};</span> <span class="n">nbit_env</span><span class="o">::</span><span class="kt">Int</span><span class="o">=</span><span class="n">nactive</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="n">where</span> <span class="n">B</span>
     <span class="n">Ne</span> <span class="o">=</span> <span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">nbit_env</span>
     <span class="n">Ns</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">state</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -12005,7 +12028,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>purify (generic function with 1 method)</pre>
+<pre>purify</pre>
 </div>
 
 </div>
@@ -12019,21 +12042,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="nd">@testset</span> <span class="s">&quot;purify&quot;</span> <span class="k">begin</span>
-    <span class="n">reg</span> <span class="o">=</span> <span class="n">rand_state</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-    <span class="n">reg_p</span> <span class="o">=</span> <span class="n">purify</span><span class="p">(</span><span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">ρ</span><span class="p">)</span>
-    <span class="nd">@test</span> <span class="n">reg_p</span> <span class="o">|&gt;</span> <span class="n">isnormalized</span>
-    <span class="nd">@test</span> <span class="n">reg_p</span> <span class="o">|&gt;</span> <span class="n">exchange_sysenv</span> <span class="o">|&gt;</span> <span class="n">probs</span> <span class="o">|&gt;</span> <span class="n">maximum</span> <span class="n">≈</span> <span class="mi">1</span>
-    <span class="n">reg_p</span> <span class="o">=</span> <span class="n">purify</span><span class="p">(</span><span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">nbit_env</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="nd">@test</span> <span class="n">Yao</span><span class="o">.</span><span class="n">fidelity</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">reg_p</span><span class="p">)</span> <span class="n">≈</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="n">reg</span> <span class="o">=</span> <span class="n">rand_state</span><span class="p">(</span><span class="mi">6</span><span class="p">;</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">reg_p</span> <span class="o">=</span> <span class="n">purify</span><span class="p">(</span><span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">ρ</span><span class="p">)</span>
-    <span class="nd">@test</span> <span class="n">reg_p</span> <span class="o">|&gt;</span> <span class="n">isnormalized</span>
-    <span class="nd">@test</span> <span class="n">reg_p</span> <span class="o">|&gt;</span> <span class="n">exchange_sysenv</span> <span class="o">|&gt;</span> <span class="n">probs</span> <span class="o">|&gt;</span> <span class="n">maximum</span> <span class="n">≈</span> <span class="mi">1</span>
-    <span class="n">reg_p</span> <span class="o">=</span> <span class="n">purify</span><span class="p">(</span><span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">nbit_env</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="nd">@test</span> <span class="n">Yao</span><span class="o">.</span><span class="n">fidelity</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">reg_p</span><span class="p">)</span> <span class="n">≈</span> <span class="n">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="k">end</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># e.g. purify a state and recover it</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">rand_state</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">|&gt;</span> <span class="n">focus!</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">reg_p</span> <span class="o">=</span> <span class="n">purify</span><span class="p">(</span><span class="n">reg</span> <span class="o">|&gt;</span> <span class="n">ρ</span><span class="p">;</span> <span class="n">nbit_env</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nd">@test</span> <span class="n">Yao</span><span class="o">.</span><span class="n">fidelity</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">reg_p</span><span class="p">)[]</span> <span class="n">≈</span> <span class="mi">1</span>
 </pre></div>
 
 </div>
@@ -12045,22 +12057,12 @@ div#notebook {
 
 
 <div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre><span class="ansi-white-intense-fg ansi-bold">Test Summary: | </span><span class="ansi-green-intense-fg ansi-bold">Pass  </span><span class="ansi-cyan-intense-fg ansi-bold">Total</span>
-purify        | <span class="ansi-green-fg">   6  </span><span class="ansi-cyan-fg">    6</span>
-</pre>
-</div>
-</div>
-
-<div class="output_area">
 <div class="prompt output_prompt">Out[5]:</div>
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Test.DefaultTestSet(&#34;purify&#34;, Any[], 6, false)</pre>
+<pre><span class="ansi-green-intense-fg ansi-bold">Test Passed</span></pre>
 </div>
 
 </div>
@@ -12087,8 +12089,10 @@ purify        | <span class="ansi-green-fg">   6  </span><span class="ansi-cyan-
 <span class="n">freg1</span> <span class="o">=</span> <span class="n">focus!</span><span class="p">(</span><span class="n">reg1</span><span class="p">,</span> <span class="mi">1</span><span class="o">:</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">reg2</span> <span class="o">=</span> <span class="n">rand_state</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">freg2</span> <span class="o">=</span> <span class="n">focus!</span><span class="p">(</span><span class="n">reg2</span><span class="p">,</span> <span class="mi">1</span><span class="o">:</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">dm1</span><span class="p">,</span> <span class="n">dm2</span> <span class="o">=</span> <span class="n">freg1</span><span class="o">|&gt;</span><span class="n">reg2dm</span><span class="p">,</span> <span class="n">freg2</span><span class="o">|&gt;</span><span class="n">reg2dm</span>
-<span class="n">Yao</span><span class="o">.</span><span class="n">tracedist</span><span class="p">(</span><span class="n">freg1</span><span class="p">,</span> <span class="n">freg2</span><span class="p">)[]</span><span class="o">/</span><span class="mi">2</span> <span class="n">≈</span> <span class="n">QI</span><span class="o">.</span><span class="n">trace_distance</span><span class="p">(</span><span class="n">dm1</span><span class="p">,</span> <span class="n">dm2</span><span class="p">)</span>
+<span class="n">dm1</span><span class="p">,</span> <span class="n">dm2</span> <span class="o">=</span> <span class="n">freg1</span> <span class="o">|&gt;</span> <span class="n">reg2dm</span><span class="p">,</span> <span class="n">freg2</span> <span class="o">|&gt;</span> <span class="n">reg2dm</span>
+
+<span class="c"># trace distance between two registers (different by a factor 2)</span>
+<span class="nd">@test</span> <span class="n">Yao</span><span class="o">.</span><span class="n">tracedist</span><span class="p">(</span><span class="n">freg1</span><span class="p">,</span> <span class="n">freg2</span><span class="p">)[]</span><span class="o">/</span><span class="mi">2</span> <span class="n">≈</span> <span class="n">QI</span><span class="o">.</span><span class="n">trace_distance</span><span class="p">(</span><span class="n">dm1</span><span class="p">,</span> <span class="n">dm2</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12105,7 +12109,7 @@ purify        | <span class="ansi-green-fg">   6  </span><span class="ansi-cyan-
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>true</pre>
+<pre><span class="ansi-green-intense-fg ansi-bold">Test Passed</span></pre>
 </div>
 
 </div>
@@ -12136,8 +12140,8 @@ purify        | <span class="ansi-green-fg">   6  </span><span class="ansi-cyan-
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>QI.vonneumann_entropy(dm1) = 2.652822311756146
-QI.vonneumann_entropy(dm2) = 1.309730294100424
+<pre>QI.vonneumann_entropy(dm1) = 2.6500592717351896
+QI.vonneumann_entropy(dm2) = 1.2799231157282756
 </pre>
 </div>
 </div>
@@ -12148,7 +12152,7 @@ QI.vonneumann_entropy(dm2) = 1.309730294100424
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>1.309730294100424</pre>
+<pre>1.2799231157282756</pre>
 </div>
 
 </div>
@@ -12162,7 +12166,8 @@ QI.vonneumann_entropy(dm2) = 1.309730294100424
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">QI</span><span class="o">.</span><span class="n">kl_divergence</span><span class="p">(</span><span class="n">dm2</span><span class="p">,</span> <span class="n">dm1</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># KL-divergence (or relative entropy)</span>
+<span class="n">QI</span><span class="o">.</span><span class="n">kl_divergence</span><span class="p">(</span><span class="n">dm2</span><span class="p">,</span> <span class="n">dm1</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12179,38 +12184,7 @@ QI.vonneumann_entropy(dm2) = 1.309730294100424
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>1.6027017107744235</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">QI</span><span class="o">.</span><span class="n">negativity</span><span class="p">(</span><span class="n">dm1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>-0.0</pre>
+<pre>1.5318773731264717</pre>
 </div>
 
 </div>
@@ -12234,16 +12208,17 @@ QI.vonneumann_entropy(dm2) = 1.309730294100424
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Quantum-Operations/Quantum-Gates">Quantum Operations/Quantum Gates<a class="anchor-link" href="#Quantum-Operations/Quantum-Gates">&#182;</a></h2>
+<h2 id="Quantum-Operations/Quantum-Gates">Quantum Operations/Quantum Gates<a class="anchor-link" href="#Quantum-Operations/Quantum-Gates">&#182;</a></h2><p>A quantum gate in <code>Yao</code> is equivalent to a unitary channel in <code>QI</code>, matrix representations of blocks in <code>Yao</code> can be used to construct channels.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">SparseArrays</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># construct a Kraus Operator</span>
 <span class="n">QI</span><span class="o">.</span><span class="n">KrausOperators</span><span class="p">([</span><span class="kt">Matrix</span><span class="p">(</span><span class="n">P0</span><span class="p">),</span> <span class="kt">Matrix</span><span class="p">(</span><span class="n">P1</span><span class="p">),</span> <span class="kt">Matrix</span><span class="p">(</span><span class="n">Pu</span><span class="p">)])</span>
 </pre></div>
 
@@ -12256,7 +12231,7 @@ QI.vonneumann_entropy(dm2) = 1.309730294100424
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+<div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -12276,10 +12251,11 @@ QI.vonneumann_entropy(dm2) = 1.309730294100424
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">b1</span> <span class="o">=</span> <span class="n">Yao</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">=&gt;</span><span class="n">Rx</span><span class="p">(</span><span class="mf">0.3</span><span class="nb">π</span><span class="p">))</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="c"># applying a rotation gate</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">Yao</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">=&gt;</span><span class="n">Rx</span><span class="p">(</span><span class="mf">0.3</span><span class="nb">π</span><span class="p">))</span>
 <span class="n">c1</span> <span class="o">=</span> <span class="n">QI</span><span class="o">.</span><span class="n">UnitaryChannel</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">b1</span><span class="p">))</span>
 <span class="n">b2</span> <span class="o">=</span> <span class="n">Yao</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">=&gt;</span><span class="n">Ry</span><span class="p">(</span><span class="mf">0.3</span><span class="nb">π</span><span class="p">))</span>
 <span class="n">c2</span> <span class="o">=</span> <span class="n">QI</span><span class="o">.</span><span class="n">UnitaryChannel</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">b2</span><span class="p">))</span>
@@ -12298,40 +12274,7 @@ QI.vonneumann_entropy(dm2) = 1.309730294100424
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[11]:</div>
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-intense-fg ansi-bold">Test Passed</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">Yao</span><span class="o">.:</span><span class="n">⊗</span><span class="p">(</span><span class="n">Yao</span><span class="o">.</span><span class="n">product_state</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mb">0b10</span><span class="p">),</span> <span class="n">Yao</span><span class="o">.</span><span class="n">product_state</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mb">0b11</span><span class="p">))</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">QI</span><span class="o">.:</span><span class="n">⊗</span><span class="p">(</span><span class="n">QI</span><span class="o">.</span><span class="n">ket</span><span class="p">(</span><span class="mb">0b10</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">),</span> <span class="n">QI</span><span class="o">.</span><span class="n">ket</span><span class="p">(</span><span class="mb">0b11</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">))</span>
-<span class="nd">@test</span> <span class="n">statevec</span><span class="p">(</span><span class="n">reg</span><span class="p">)</span> <span class="n">≈</span> <span class="n">v</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt output_prompt">Out[12]:</div>
+<div class="prompt output_prompt">Out[10]:</div>
 
 
 
