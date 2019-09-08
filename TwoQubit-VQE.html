@@ -11780,6 +11780,14 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Solving-TFI-model-with-only-2-qubits---the-&#24186;-simulation">Solving TFI model with only 2 qubits - the &#24186; simulation<a class="anchor-link" href="#Solving-TFI-model-with-only-2-qubits---the-&#24186;-simulation">&#182;</a></h1><h3 id="Reference:-Variational-Quantum-Eigensolver-with-Fewer-Qubits">Reference: Variational Quantum Eigensolver with Fewer Qubits<a class="anchor-link" href="#Reference:-Variational-Quantum-Eigensolver-with-Fewer-Qubits">&#182;</a></h3><p><em>Jin-Guo Liu, Yi-Hong Zhang, Yuan Wan, Lei Wang</em></p>
 <p><a href="https://arxiv.org/abs/1902.02663">https://arxiv.org/abs/1902.02663</a></p>
+<h3>Note: API change for newer version Yao,</h3>
+<p class = "b">&nbsp;&nbsp;&nbsp;&nbsp;    Measure{nbit, 1, AbstractBlock}(Z, (loc,), 0, false)</p>
+<p>replaced by</p>
+<p class = "b">
+&nbsp;&nbsp;&nbsp;&nbsp;    using Random<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;   rng = Random.GLOBAL_RNG<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;   Measure{nbit, 1, AbstractBlock, typeof(rng)}(rng, Z, (loc,), 0, false)
+</p>
 
 </div>
 </div>
