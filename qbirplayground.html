@@ -105,24 +105,25 @@
         <div class="row">
             <div class="col-md-6 col-xs-6">
                 <div class="row">
-                    <label for="input-nbit" class="col-sm-4 control-label float-right">Set Qubit Number</label>
-                    <div class="col-sm-7">
-                    <input type="number" class="form-control" onchange="onqubitchange()" id="input-nbits" min=1 max=60 placeholder="1-60">
-                    <p class="form-text text-muted">will reset circuit!</p>
+                    <div class="col-sm-11">
+                        <h6 for="input-nbits" class="control-label">Number of qubits</h6>
+                        <input type="number" class="form-control" onchange="onqubitchange()" id="input-nbits" min=1 max=100 placeholder="1-60">
+                        <p class="form-text text-info">change this field will reset circuit!</p>
                     </div>
-                    <div class="form-group col-sm-11">
-                        <textarea class="form-control" onkeypress="ontextchange()" placeholder="<Ctrl> + <Enter> to send the instruction." id="yaoinstruct"></textarea>
+                    <div class="form-group col-sm-11" style="margin-top:10px">
+                        <h6 for="yaoinstruct" class="control-label">Instruction</h6>
+                        <textarea class="form-control" onkeypress="ontextchange()" placeholder="<Ctrl> + <Enter> to send the instruction." id="yaoinstruct" style="margin-top:10px"></textarea>
                     </div>
 
                     <div class="form-group col-sm-11">
                         <div class="btn-group float-right" role="group">
-                            <button type="button" class="btn btn-primary" onclick="sendtext()">Send</button>
+                            <button type="button" class="btn btn-info btn-sm" onclick="sendtext()">Send</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-11" style="margin-top:30px">
+                    <div class="col-sm-11" style="margin-top:10px">
                     <h3>
                         Examples
                     </h3>
@@ -147,14 +148,14 @@
                 </h3>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="sendinstr('download_coo()')">Sparse Matrix (COO)</button>
-                    <button type="button" class="btn btn-info" onclick="sendinstr('download_dense()')">Dense Matrix</button>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="sendinstr('download_coo()')">Sparse Matrix (COO)</button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="sendinstr('download_dense()')">Dense Matrix</button>
                 </div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="sendinstr('download_script()')">YaoScript</button>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="sendinstr('download_script()')">YaoScript</button>
                 </div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="sendinstr('download_tensornetwork()')">Tensor Network</button>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="sendinstr('download_tensornetwork()')">Tensor Network</button>
                 </div>
             </div>
         </div>
