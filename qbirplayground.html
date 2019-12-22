@@ -107,7 +107,7 @@
                 <div class="row">
                     <div class="col-sm-11">
                         <h6 for="input-nbits" class="control-label">Number of qubits</h6>
-                        <input type="number" class="form-control" onchange="onqubitchange()" id="input-nbits" min=1 max=100 placeholder="1-60">
+                        <input type="number" class="form-control" onchange="onqubitchange()" id="input-nbits" min=1 max=100 placeholder="1-100">
                         <p class="form-text text-info">change this field will reset circuit!</p>
                     </div>
                     <div class="form-group col-sm-11" style="margin-top:10px">
@@ -134,7 +134,7 @@
                         <dt>begin ... end</dt><dd>put a sequence of gate</dd>
                         <dt>2 => rot(X, :α)</dt><dd>put a rotation gate (symbolic)</dd>
                         <dt>5=>C, 4=>C, 3=>Y</dt><dd>put a control gate</dd>
-                        <dt>5=>C(0), 4=>C(1), 3=>Y</dt><dd>put a control gate, where `C(0)` is inverse control.</dd>
+                        <dt>(5=>X, 6=>X) + (5=>Y, 6=>Y) + (5=>Z, 6=>Z)</dt><dd>addition of operators, this is a Heisenberg term.</dd>
                     </dl>
                     For more, see the `parse_ex` function defined in <a href="https://github.com/QuantumBFS/YaoBlocks.jl/blob/master/src/treeutils/load.jl#L60">YaoBlocks</a>
                     </div>
