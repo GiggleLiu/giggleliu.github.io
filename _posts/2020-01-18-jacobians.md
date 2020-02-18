@@ -34,12 +34,14 @@ H &= \mathbf{0}
 $$
 
 The inverse is $a \mathrel-= b​$, its Jacobian is the inverse of the matrix above
+
 $$
 J(f^{-1}) = J^{-1} = \left(\begin{matrix}
 1 & -1\\
 0 & 1
 \end{matrix}\right)
 $$
+
 In the following, we omit the Jacobians and Hessians of inverse functions.
 
 (2). $a\mathrel+=b*c$
