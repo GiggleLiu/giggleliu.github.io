@@ -52,7 +52,7 @@ J = \left(\begin{matrix}
 0 & 1 & 0\\
 0 & 0 & 1
 \end{matrix}\right)\\
-H^a_{bc} = 1, else ~0
+H^a_{bc} = H^a_{cb} = 1, else ~0
 $$
 
 (3). $a\mathrel+=b/c​$
@@ -63,7 +63,8 @@ J = \left(\begin{matrix}
 0 & 1 & 0\\
 0 & 0 & 1
 \end{matrix}\right)\\
-H^a_{cc} = 2b/c^3,H^a_{bc} = -1/c^2,else ~ 0
+H^a_{cc} = 2b/c^3,\\
+H^a_{bc} = H^a_{cb} = -1/c^2,else ~ 0
 $$
 
 (4). $a\mathrel+=b^c​$
@@ -75,7 +76,9 @@ J = \left(\begin{matrix}
 0 & 1 & 0\\
 0 & 0 & 1
 \end{matrix}\right)\\
-H^a_{bc} = b^{c-1} + c b^{c-1}\log b, H^a_{bb} = (c-1)c b^{c-2}, H^a_{cc} = b^c\log^2b, else ~0
+H^a_{bc} = H^a_{cb}  = b^{c-1} + c b^{c-1}\log b,\\
+H^a_{bb} = (c-1)c b^{c-2},\\
+H^a_{cc} = b^c\log^2b, else ~0
 $$
 
 (5). $a\mathrel+=e^b$
@@ -151,15 +154,17 @@ $$
 $$
 
 $$
-J = \left(\begin{matrix}
+\begin{align*}
+    &J = \left(\begin{matrix}
         \cos\theta & - \sin\theta & -b\cos\theta-a\sin \theta\\
         \sin\theta  & \cos\theta & a\cos\theta -b\sin\theta\\
         0 & 0 & 1
     \end{matrix}\right)\\
-   H^a_{a\theta} = -\sin\theta,    H^a_{b\theta} = -\cos\theta,   H^a_{\theta\theta} = -a\cos\theta + b\sin\theta,\\
-   H^b_{a\theta} = \cos\theta,   H^b_{a\theta} = -\sin\theta,   H^b_{a\theta} = -b\cos\theta-a\sin\theta,\\
-   else ~0
+    &H^a_{a\theta} = H^a_{\theta, b} = -\sin\theta,\\
+    &H^a_{b\theta} = H^a_{\theta, b} = -\cos\theta,\\
+    &H^a_{\theta\theta} = -a\cos\theta + b\sin\theta,\\
+    &H^b_{a\theta} = H^b_{\theta a} = \cos\theta,\\
+    &H^b_{b\theta} = H^b_{\theta b} = -\sin\theta,\\
+    &H^b_{\theta\theta} = -b\cos\theta-a\sin\theta, else ~0
+\end{align*}
 $$
-
-
-
