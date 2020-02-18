@@ -21,7 +21,7 @@ $$
 
 
 
-1. $a \mathrel+= b$
+(1). $a \mathrel+= b$
 
 $$
 \begin{align}
@@ -42,7 +42,7 @@ J(f^{-1}) = J^{-1} = \left(\begin{matrix}
 $$
 In the following, we omit the Jacobians and Hessians of inverse functions.
 
-2. $a\mathrel+=b*c$
+(2). $a\mathrel+=b*c$
 
 $$
 J = \left(\begin{matrix}
@@ -53,7 +53,7 @@ J = \left(\begin{matrix}
 H^a_{bc} = 1, else ~0
 $$
 
-3. $a\mathrel+=b/c​$
+(3). $a\mathrel+=b/c​$
 
 $$
 J = \left(\begin{matrix}
@@ -64,7 +64,7 @@ J = \left(\begin{matrix}
 H^a_{cc} = 2b/c^3,H^a_{bc} = -1/c^2,else ~ 0
 $$
 
-4. $a\mathrel+=b^c​$
+(4). $a\mathrel+=b^c​$
 
 
 $$
@@ -76,7 +76,7 @@ J = \left(\begin{matrix}
 H^a_{bc} = b^{c-1} + c b^{c-1}\log b, H^a_{bb} = (c-1)c b^{c-2}, H^a_{cc} = b^c\log^2b, else ~0
 $$
 
-5. $a\mathrel+=e^b$
+(5). $a\mathrel+=e^b$
 
 $$
 J = \left(\begin{matrix}
@@ -86,7 +86,7 @@ J = \left(\begin{matrix}
 H^a_{bb} = e^b, else ~0
 $$
 
-6. $a\mathrel+=\log b​$
+(6). $a\mathrel+=\log b​$
 
 $$
 J = \left(\begin{matrix}
@@ -96,7 +96,7 @@ J = \left(\begin{matrix}
 H^a_{bb} = -1/b^2, else ~0
 $$
 
-7. $a\mathrel+=\sin b​$
+(7). $a\mathrel+=\sin b​$
 
 $$
 J = \left(\begin{matrix}
@@ -106,7 +106,7 @@ J = \left(\begin{matrix}
 H^a_{bb} = -\sin b, else ~0
 $$
 
-8. $a\mathrel+=\cos b​$
+(8). $a\mathrel+=\cos b​$
 
 $$
 J = \left(\begin{matrix}
@@ -116,7 +116,7 @@ J = \left(\begin{matrix}
 H^a_{bb} = -\cos b, else ~0
 $$
 
-9. $a \mathrel += | b|​$
+(9). $a \mathrel+= \vert b\vert​$
 
 $$
 J = \left(\begin{matrix}
@@ -126,7 +126,7 @@ J = \left(\begin{matrix}
 H = \mathbf{0}
 $$
 
-10. $a = -a​$
+(10). $a = -a​$
 
 $$
 J = \left(\begin{matrix}
@@ -135,7 +135,7 @@ J = \left(\begin{matrix}
 H = \mathbf{0}
 $$
 
-11. ​
+(11). ​
 
 $$
 {\rm ROT}(a, b, \theta)  = \left(\begin{matrix}
