@@ -149,7 +149,7 @@ $$
 \end{matrix}
 \right)\\
     H = \mathbf{0}
-$
+$$
 
 
 (12). ​
