@@ -140,7 +140,19 @@ J = \left(\begin{matrix}
 H = \mathbf{0}
 $$
 
-(11). ​
+(11). ${\rm SWAP}(a, b) = (b, a)$
+
+$$
+    J = \left(\begin{matrix}
+0 & 1 \\
+1 & 0
+\end{matrix}
+\right)\\
+    H = \mathbf{0}
+$
+
+
+(12). ​
 
 $$
 {\rm ROT}(a, b, \theta)  = \left(\begin{matrix}
