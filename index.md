@@ -13,3 +13,4 @@ layout: home
 * [QBIR playground](qbirplayground.html)
 * [Quantum Circuit ABC](qc-abc.html)
 * [Porting Yao with QuantumInformation](yao_port_qi.html)
+* [Google Slides: Differential Programming for Physicists](https://docs.google.com/presentation/d/1KZWHSt3GRCGU4AwkwJvnHKxEm-Y-WhTcFSW7sR7cs9s/edit?usp=sharing)
