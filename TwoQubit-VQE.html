@@ -11786,7 +11786,7 @@ div#notebook {
 <p class = "b">
 &nbsp;&nbsp;&nbsp;&nbsp;    using Random<br>
  &nbsp;&nbsp;&nbsp;&nbsp;   rng = Random.GLOBAL_RNG<br>
- &nbsp;&nbsp;&nbsp;&nbsp;   Measure{nbit, 1, AbstractBlock, typeof(rng)}(rng, Z, (loc,), 0, false)
+ &nbsp;&nbsp;&nbsp;&nbsp;   Measure{2, 1, AbstractBlock, Tuple{Int}, ResetTo, typeof(Random.GLOBAL_RNG)}(nbit, Random.GLOBAL_RNG, Z, (loc,), ResetTo(0))
 </p>
 
 </div>
