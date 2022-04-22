@@ -11782,11 +11782,9 @@ div#notebook {
 <p><a href="https://arxiv.org/abs/1902.02663">https://arxiv.org/abs/1902.02663</a></p>
 <h3>Note: API change for newer version Yao,</h3>
 <p class = "b">&nbsp;&nbsp;&nbsp;&nbsp;    Measure{nbit, 1, AbstractBlock}(Z, (loc,), 0, false)</p>
-<p>replaced by</p>
+<p>is not usable anymore, because it is not safe to measure an operator and reset the qubit (the state after measuring an operator is not gauranteed to be a product state!). Please use <a href="https://github.com/GiggleLiu/QuantumPEPS.jl/blob/master/src/YaoPatch.jl">basis rotation approach instead.</a></p>
 <p class = "b">
-&nbsp;&nbsp;&nbsp;&nbsp;    using Random<br>
- &nbsp;&nbsp;&nbsp;&nbsp;   rng = Random.GLOBAL_RNG<br>
- &nbsp;&nbsp;&nbsp;&nbsp;   Measure{2, 1, AbstractBlock, Tuple{Int}, ResetTo, typeof(Random.GLOBAL_RNG)}(nbit, Random.GLOBAL_RNG, Z, (loc,), ResetTo(0))
+ &nbsp;&nbsp;&nbsp;&nbsp;   
 </p>
 
 </div>
