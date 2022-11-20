@@ -17,6 +17,8 @@ website_title = "GiggleLiu's website"
 website_descr = "Codes and blogs"
 website_url   = "https://giggleliu.github.io/"
 
+website_url = get(ENV, "PREVIEW_FRANKLIN_WEBSITE_URL", "giggleliu.github.io") # Just put the website name
+
 # ignore
 ignore = ["_ignore/"]
 +++
