@@ -5,7 +5,7 @@
 ~~~
 <big>
 Dear reader,
-please <a href="https://github.com/GiggleLiu/giggleliu.github.io">file an issue</a> if any gist or notebook is broken, thank you! - Jinguo</big>
+please <a href="https://github.com/GiggleLiu/giggleliu.github.io/issues">file an issue</a> if any gist or notebook is broken, thank you! - Jinguo</big>
 ~~~
 
 
