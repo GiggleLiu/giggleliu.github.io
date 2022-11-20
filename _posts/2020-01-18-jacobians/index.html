@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/libs/katex/katex.min.css">
+     
+  
+  <link rel="stylesheet" href="/css/franklin.css">
+<link rel="stylesheet" href="/css/poole_hyde.css">
+<!-- style adjustments -->
+<style>
+  html {font-size: 17px;}
+  .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;}
+  @media (min-width: 940px) {
+    .franklin-content {width: 100%; margin-left: auto; margin-right: auto;}
+  }
+  @media (max-width: 768px) {
+    .franklin-content {padding-left: 6%; padding-right: 6%;}
+  }
+</style>
+<link rel="icon" href="/assets/favicon.png">
+
+   <title>Jacobians and Hessians for Reversible Primitives</title>  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1><a href="/">Jinguo LIU</a></h1>
+      <p class="lead">Early to bed and early to rise, makes a man healthy, wealthy, and wise.</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item " href="/">Home</a>
+      <a class="sidebar-nav-item " href="/blogs/">Blogs</a>
+      <a class="sidebar-nav-item " href="/code/">Code</a>
+      <a class="sidebar-nav-item " href="/about/">About Me</a>
+    </nav>
+    <p>&copy; GiggleLiu.</p>
+  </div>
+</div>
+<div class="content container">
+
+<!-- Content appended here -->
+<div class="franklin-content"><h1 id="jacobians_and_hessians_for_reversible_primitives"><a href="#jacobians_and_hessians_for_reversible_primitives" class="header-anchor">Jacobians and Hessians for Reversible Primitives</a></h1>
+<p>This blog covers the Jacobians and Hessians for reversible primitives, they can be used to propagate gradients and Hessians in a reversible programs.</p>
+<h2 id="the_definition"><a href="#the_definition" class="header-anchor">The Definition</a></h2>
+<p>For function \(\vec{y} = f(\vec{x})\), we define its Jacobian as</p>
+\[
+J_{ij} = \frac{\partial y_i}{\partial x_j}.
+\]
+<p>Its Hessian is</p>
+\[
+H^k_{ij} = \frac{\partial y_k}{x_i x_j}
+\]
+<h2 id="jacobian_of_reversible_primitives"><a href="#jacobian_of_reversible_primitives" class="header-anchor">Jacobian of Reversible Primitives</a></h2>
+<p>&#40;1&#41;. \(a \mathrel+= b\)</p>
+\[
+\begin{align}
+J &= \left(\begin{matrix}
+1 & 1\\
+0 & 1
+\end{matrix}\right)\\
+H &= \mathbf{0}
+\end{align}
+\]
+<p>The inverse is \(a \mathrel-= b​\), its Jacobian is the inverse of the matrix above</p>
+\[
+J(f^{-1}) = J^{-1} = \left(\begin{matrix}
+1 & -1\\
+0 & 1
+\end{matrix}\right)
+\]
+<p>In the following, we omit the Jacobians and Hessians of inverse functions.</p>
+<p>&#40;2&#41;. \(a\mathrel+=b*c\)</p>
+\[
+J = \left(\begin{matrix}
+1 & c & b\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{matrix}\right)\\
+H^a_{bc} = H^a_{cb} = 1, else ~0
+\]
+<p>&#40;3&#41;. \(a\mathrel+=b/c​\)</p>
+\[
+J = \left(\begin{matrix}
+1 & 1/c &-b/c^2\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{matrix}\right)\\
+H^a_{cc} = 2b/c^3,\\
+H^a_{bc} = H^a_{cb} = -1/c^2,else ~ 0
+\]
+<p>&#40;4&#41;. \(a\mathrel+=b^c​\)</p>
+\[
+J = \left(\begin{matrix}
+1 &  cb^{c-1} &   b^c \log b \\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{matrix}\right)\\
+H^a_{bc} = H^a_{cb}  = b^{c-1} + c b^{c-1}\log b,\\
+H^a_{bb} = (c-1)c b^{c-2},\\
+H^a_{cc} = b^c\log^2b, else ~0
+\]
+<p>&#40;5&#41;. \(a\mathrel+=e^b\)</p>
+\[
+J = \left(\begin{matrix}
+1 &  e^b \\
+0 & 1
+\end{matrix}\right)\\
+H^a_{bb} = e^b, else ~0
+\]
+<p>&#40;6&#41;. \(a\mathrel+=\log b​\)</p>
+\[
+J = \left(\begin{matrix}
+1 &  1/b \\
+0 & 1
+\end{matrix}\right)\\
+H^a_{bb} = -1/b^2, else ~0
+\]
+<p>&#40;7&#41;. \(a\mathrel+=\sin b​\)</p>
+\[
+J = \left(\begin{matrix}
+1 &  \cos b \\
+0 & 1
+\end{matrix}\right)\\
+H^a_{bb} = -\sin b, else ~0
+\]
+<p>&#40;8&#41;. \(a\mathrel+=\cos b​\)</p>
+\[
+J = \left(\begin{matrix}
+1 &  -\sin b \\
+0 & 1
+\end{matrix}\right)\\
+H^a_{bb} = -\cos b, else ~0
+\]
+<p>&#40;9&#41;. \(a \mathrel+= \vert b\vert​\)</p>
+\[
+J = \left(\begin{matrix}
+1 &  {\rm sign} (b) \\
+0 & 1
+\end{matrix}\right)\\
+H = \mathbf{0}
+\]
+<p>&#40;10&#41;. \(a = -a​\)</p>
+\[
+J = \left(\begin{matrix}
+-1
+\end{matrix}\right)\\
+H = \mathbf{0}
+\]
+<p>&#40;11&#41;. \({\rm SWAP}(a, b) = (b, a)\)</p>
+\[
+    J = \left(\begin{matrix}
+0 & 1 \\
+1 & 0
+\end{matrix}
+\right)\\
+    H = \mathbf{0}
+\]
+<p>&#40;12&#41;. ​</p>
+\[
+{\rm ROT}(a, b, \theta)  = \left(\begin{matrix}
+        \cos\theta & - \sin\theta\\
+        \sin\theta  & \cos\theta
+    \end{matrix}\right)
+    \left(\begin{matrix}
+        a\\
+        b
+    \end{matrix}\right)
+\]
+\[
+\begin{align*}
+    &J = \left(\begin{matrix}
+        \cos\theta & - \sin\theta & -b\cos\theta-a\sin \theta\\
+        \sin\theta  & \cos\theta & a\cos\theta -b\sin\theta\\
+        0 & 0 & 1
+    \end{matrix}\right)\\
+    &H^a_{a\theta} = H^a_{\theta, b} = -\sin\theta,\\
+    &H^a_{b\theta} = H^a_{\theta, b} = -\cos\theta,\\
+    &H^a_{\theta\theta} = -a\cos\theta + b\sin\theta,\\
+    &H^b_{a\theta} = H^b_{\theta a} = \cos\theta,\\
+    &H^b_{b\theta} = H^b_{\theta b} = -\sin\theta,\\
+    &H^b_{\theta\theta} = -b\cos\theta-a\sin\theta, else ~0
+\end{align*}
+\]
+<div class="page-foot">
+    <div>
+    <a href="https://github.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github: GiggleLiu</a>
+    <br>
+    <a href="https://twitter.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> Twitter: GiggleLiu</a>
+    <br>
+    <a href="https://scholar.google.com/citations?user=4edw228AAAAJ" rel="nofollow noopener noreferrer"><i class="fa-google-scholar" aria-hidden="true"></i> Google Scholar: 4edw228AAAAJ</a>
+    </div>
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> GiggleLiu. Last modified: November 20, 2022.
+    Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>  <!-- div: content container -->
+    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
+    
+        <script src="/libs/katex/katex.min.js"></script>
+<script src="/libs/katex/contrib/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+
+  </body>
+
+</html>
