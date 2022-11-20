@@ -1,4 +1,0 @@
-Sitemap: giggleliu.github.io/sitemap.xml
-
-User-agent: *
-Disallow:

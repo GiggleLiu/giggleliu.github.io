@@ -1,5 +1,6 @@
 @def title = "Coding Base"
 @def tags = ["code", "Jinguo Liu"]
+@def asciinema = true
 
 # Code Base
 ~~~
@@ -32,3 +33,20 @@ please <a href="https://github.com/GiggleLiu/giggleliu.github.io/issues">file an
 * [CUDAnative based einsum! on GPU - the prototype](https://gist.github.com/GiggleLiu/d72b04fd4d2123a4dba0d024e210da6c)
 * [Automatic Differentiation over Tensor Renormalization Group](https://gist.github.com/GiggleLiu/0fb539d1a453b2cc6aca769d14d2cc79)
 * [Get the groundstate for a Hamiltonian (not VQE!) using Yao.jl](https://gist.github.com/GiggleLiu/5258ebc44e2b1460514be3f5da71aa1d)
+
+## Live Coding
+#### Clip Control
+~~~
+<ul>
+<li>Pause: <kbd>SPACE</kbd></li>
+<li>Fast Forward: <kbd>→</kbd></li>
+<li>Fast Backward: <kbd>←</kbd></li>
+<li>Toggle Full Screen: <kbd>f</kbd></li>
+</ul>
+~~~
+#### (1). Tutorial on quantum simulator Yao (@v0.8.3)
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/yao/main.cast}}
+
+#### (2). The instantiation of a Julia function (in Chinese)
+
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/matmul/main.cast}}

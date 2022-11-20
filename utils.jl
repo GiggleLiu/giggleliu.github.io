@@ -1,3 +1,5 @@
+using Random
+
 function hfun_bar(vname)
     val = Meta.parse(vname[1])
     return round(sqrt(val), digits=2)
@@ -6,6 +8,17 @@ end
 function hfun_m1fill(vname)
     var = vname[1]
     return pagevar("index", var)
+end
+
+function hfun_livecoding(src)
+    id = "asciinema" * randstring()
+	"""
+<div id="$id" class="x"></div>
+<script>
+var target = document.getElementById('$id');
+AsciinemaPlayer.create('$(src[1])', target);
+</script>
+"""
 end
 
 function hfun_bloglist()
