@@ -1,7 +1,4 @@
----
-layout: post
-title: Symmetries of Neural Networks as a Quantum Wave Function Ansatz
----
+@def title = "Symmetries of Neural Networks as a Quantum Wave Function Ansatz"
 
 ## Momentum Selection
 Translation invariance of wave functions are different from that in Neural networks,
@@ -30,7 +27,7 @@ For $k\neq0​$, let $y(\sigma)=\sum\limits_m e^{-ikm}g(T_m\sigma)​$, we have 
 For 1D $J_1-J_2$ model, $L=16, J_2=0.8$, I calculated the RBM ground state in $k=0,\pi$.
 For $k=\pi$, we have the yellow line, which is the true ground state.
 And the blue line is the ground state in the $k=0$ block, both of them matches the exact diagonalization results (dashed, straight lines, don't believe the legend...).
-![](images/mselection.png)
+![](/assets/images/mselection.png)
 
 
 ## Ground state symmetry analysis

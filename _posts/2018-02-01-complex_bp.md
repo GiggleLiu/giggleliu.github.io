@@ -1,7 +1,5 @@
----
-layout: post
-title: Back Propagation for Complex Valued Neural Networks
----
+@def title = "Back Propagation for Complex Valued Neural Networks"
+
 Complex value networks allows the input/variables in networks being complex, while the loss keeping real. In this post, I will
 * derive back propagation formula for complex valued neural network units.
 * provide a table of reference for widely used complex neural network units.
@@ -32,14 +30,14 @@ Given input vector $x$ of length $10$, our toy network gives output $J=f_2(f_1(f
 
 **Result:**
 
-![](/images/cbp.png)
+![](/assets/images/cbp.png)
 
 Only the correct fomulation (above notes) converges to $-10$ correctly, the old holomophic version  naive realization is incorrect.
 
 ## A table of reference
 
-![](/images/table1.png)
-![](/images/table2.png)
+![](/assets/images/table1.png)
+![](/assets/images/table2.png)
 
 Equation $A, B, C$ are **meta functions**, each of them generates a class of non-holomophic function.
 

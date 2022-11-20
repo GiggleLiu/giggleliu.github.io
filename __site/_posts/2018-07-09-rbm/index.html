@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/libs/katex/katex.min.css">
+     
+  
+  <link rel="stylesheet" href="/css/franklin.css">
+<link rel="stylesheet" href="/css/poole_hyde.css">
+<!-- style adjustments -->
+<style>
+  html {font-size: 17px;}
+  .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;}
+  @media (min-width: 940px) {
+    .franklin-content {width: 100%; margin-left: auto; margin-right: auto;}
+  }
+  @media (max-width: 768px) {
+    .franklin-content {padding-left: 6%; padding-right: 6%;}
+  }
+</style>
+<link rel="icon" href="/assets/favicon.png">
+
+   <title>Restricted Boltzmann Machine (RBM) for Physicsts</title>  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1><a href="/">Jinguo LIU</a></h1>
+      <p class="lead">Early to bed and early to rise, makes a man healthy, wealthy, and wise.</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item " href="/">Home</a>
+      <a class="sidebar-nav-item " href="/blogs/">Blogs</a>
+      <a class="sidebar-nav-item " href="/code/">Code</a>
+      <a class="sidebar-nav-item " href="/about/">About Me</a>
+    </nav>
+    <p>&copy; GiggleLiu.</p>
+  </div>
+</div>
+<div class="content container">
+
+<!-- Content appended here -->
+<div class="franklin-content"><h1 id="restricted_boltzmann_machine_rbm_for_physicsts"><a href="#restricted_boltzmann_machine_rbm_for_physicsts" class="header-anchor">Restricted Boltzmann Machine &#40;RBM&#41; for Physicsts</a></h1>
+<h2 id="data_motivation"><a href="#data_motivation" class="header-anchor">Data: Motivation</a></h2>
+<p>Given an i.i.d dataset \(\mathcal D\) that drawn from a target probability distribution \(\pi(x)\), with \(x\) an input vector &#40;or image&#41;.</p>
+<p>We want to learn a model \(p_\theta(x)\sim \pi(x)\).</p>
+<p>Here \(\mathcal D\) can be</p>
+<ul>
+<li><p>an image dataset,</p>
+</li>
+<li><p>monte carlo samples,</p>
+</li>
+<li><p>measurement results of a quantum circuit.</p>
+</li>
+</ul>
+<h2 id="model_what_is_a_boltzmann_machine"><a href="#model_what_is_a_boltzmann_machine" class="header-anchor">Model: What is a Boltzmann Machine?</a></h2>
+<p>An energy based model to describe probability distribution</p>
+<p>\(p_\theta(x)=\frac{e^{-E_\theta(x)}}{Z_\theta}\), where \(E_\theta(x)\) is described by a graph, \(Z_\theta=\sum\limits_xe^{-E_\theta(x)}\)is the partition function, \(x\) is a vector consists of \(x_i=0,1\), \(\theta\) is the network parameters.</p>
+<p>Typically, we can construct a Boltzmann Machine with the energy defined as</p>
+\(E(x) = -\frac 1 2x_iW_{ij}x_j\)
+<p>&#91;picture of boltzmann machine, as an example&#93;<img src="Figures/Handson/bmrbm.png" alt="bmrbm" /></p>
+<p>Here \(W\) matrix is the \(\theta\) parameters in the above formulation. It resembles the famous <strong>Ising</strong> model. </p>
+<h2 id="loss_the_criteria_for_optimization"><a href="#loss_the_criteria_for_optimization" class="header-anchor">Loss: The criteria for optimization</a></h2>
+<p>We want to maximize the likehood</p>
+\[l = \prod\limits_yp(y)\]
+<p>,</p>
+<p>or equivalently minimize the negative log likelihood&#40;NLL&#41; loss</p>
+\[\begin{align}\mathcal{L}=\frac L N = \frac 1 N \sum\limits_y E(y) +\log Z\end{align}\]
+<h2 id="training_how_to_minimize_the_nll_loss"><a href="#training_how_to_minimize_the_nll_loss" class="header-anchor">Training: How to minimize the NLL loss?</a></h2>
+<p>Partition function \(Z\) is notoriously hard to obtain, it is one of the fundamental problem in statistic physics.</p>
+<p>Interestingly, \(\frac{\partial \mathcal L}{\partial \theta}\) can be estimated&#33;</p>
+\[\begin{align}\frac{\partial L}{\partial\theta} &= \mathbb E_{y\in \mathcal D}[E'(y)]-\frac{\sum\limits_x E'(x)e^{-E(x)}}{Z}\\&=\mathbb E_{y\in \mathcal D}[E'(y)] - \mathbb E_{x\sim p(x)}[E'(x)]\end{align}\]
+<p>However, classical spin statistics are not simple enough, the second term is still hard.</p>
+<h3 id="a_energy_based_model_suited_for_inference"><a href="#a_energy_based_model_suited_for_inference" class="header-anchor">A energy based model suited for inference</a></h3>
+<p>Inference means Given part of \(x\), guess the rest, it is based on conditional probability \(p(x_{B}\vert x_{A}) = \sum\limits_hp(x_{B}\vert h)p(h\vert x_{A})\), which is useful in recommender systems.</p>
+<p>However, a general energy based model is hard to make <strong>inference</strong>&#40;or conditional probability&#41;, so we need a <strong>Restricted Boltzmann Machine</strong></p>
+\[E(x) = x^T\mathbf Wh + b^Th +x^Ta\]
+<p><img src="Figures/Handson/rbmcompress.png" alt="bmrbm" /></p>
+<p>conditional probability \(p(x\vert h)\propto e^{-x^T(\mathbf Wh+a)}=\prod\limits_ie^{-x_i\Theta_i}\), where \(\Theta_i\) is the ith element of \(\mathbf Wh+a\).</p>
+<p>Since all variables \(x_i\) are independant from each other, we can do pixel-wise sampling according to probability \(p(x_i)\propto \frac{e^{-x_i\Theta_i}}{1+e^{-x_i\Theta_i}}\)  &#40;i.e. \(p(x_i=0)=\sigma(\Theta_i)\)&#41;</p>
+<p><strong>Gibbs sampling:</strong></p>
+<p>conditional sampling \(x_1\rightarrow h_1\rightarrow x_2 \rightarrow \ldots\rightarrow x_n\), will converge to \(p(x)\) and \(p(h)\).</p>
+<p>1&#41;. \(\frac{p(x_{t}\vert x_{t-1})}{p(x_{t-1}\vert x_t)}=\frac{p(x_t)}{p(x_{t-1})}\)</p>
+\(p(x_t\vert x_{t-1}) =\sum\limits_{h} p(x_t\vert h)p(h\vert x_{t-1})=\sum\limits_h\frac{p(x_t, h)p(h, x_{t-1})}{p(h)p(x_{t-1})}\)
+\(p(x_{t-1}\vert x_{t}) =\sum\limits_{h} p(x_{t-1}\vert h)p(h\vert x_{t})=\sum\limits_h\frac{p(x_{t-1}, h)p(h, x_t)}{p(h)p(x_t)}\)
+<p>Statistic ensemble \(\rightarrow\) Time ensemble</p>
+<p>2&#41;. ergodicity, obvious.</p>
+<h5 id="gradient"><a href="#gradient" class="header-anchor">Gradient:</a></h5>
+\(E_\theta(x) = -x^Ta+\sum\limits_j\log(1+e^{(-x^T W+b^T)_j})\)
+\[
+\begin{cases}\frac{\partial E\theta(x)}{\partial W{ij}} &= -x_i\sigma((-x^T W-b^T)_j)\\
+
+\frac{\partial E\theta(x)}{\partial b{j}} &= -\sigma((-x^T W-b^T)_j)\\
+
+\frac{\partial E_\theta(x)}{\partial a} &= -x_i^T \end{cases}
+\]
+<p>Remark: usually, we don&#39;t need do this gradient stuff by hand, we have <a href="https://pytorch.org/">pytorch</a> and <a href="https://www.tensorflow.org/">tensorflow</a>&#33;</p>
+<h2 id="references"><a href="#references" class="header-anchor">References</a></h2>
+<p>Woodford, O. &#40;n.d.&#41;. Notes on Contrastive Divergence.</p>
+<p>Hinton, G. E., &amp; Salakhutdinov, R. R. &#40;2006&#41;. Reducing the Dimensionality of Data with Neural Networks. <em>Science</em>, <em>313</em>&#40;5786&#41;, 504–507. https://doi.org/10.1126/science.1127647</p>
+<div class="page-foot">
+    <div>
+    <a href="https://github.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github: GiggleLiu</a>
+    <br>
+    <a href="https://twitter.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> Twitter: GiggleLiu</a>
+    <br>
+    <a href="https://scholar.google.com/citations?user=4edw228AAAAJ" rel="nofollow noopener noreferrer"><i class="fa-google-scholar" aria-hidden="true"></i> Google Scholar: 4edw228AAAAJ</a>
+    </div>
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> GiggleLiu. Last modified: November 20, 2022.
+    Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>  <!-- div: content container -->
+    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
+    
+        <script src="/libs/katex/katex.min.js"></script>
+<script src="/libs/katex/contrib/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+
+  </body>
+
+</html>
