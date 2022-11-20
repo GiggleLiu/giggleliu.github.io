@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/libs/katex/katex.min.css">
+     
+  
+  <link rel="stylesheet" href="/css/franklin.css">
+<link rel="stylesheet" href="/css/poole_hyde.css">
+<!-- style adjustments -->
+<style>
+  html {font-size: 17px;}
+  .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;}
+  @media (min-width: 940px) {
+    .franklin-content {width: 100%; margin-left: auto; margin-right: auto;}
+  }
+  @media (max-width: 768px) {
+    .franklin-content {padding-left: 6%; padding-right: 6%;}
+  }
+</style>
+<link rel="icon" href="/assets/favicon.png">
+
+   <title>RealNVP for Physicists</title>  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1><a href="/">Jinguo LIU</a></h1>
+      <p class="lead">Early to bed and early to rise, makes a man healthy, wealthy, and wise.</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item " href="/">Home</a>
+      <a class="sidebar-nav-item " href="/blogs/">Blogs</a>
+      <a class="sidebar-nav-item " href="/code/">Code</a>
+      <a class="sidebar-nav-item " href="/about/">About Me</a>
+    </nav>
+    <p>&copy; GiggleLiu.</p>
+  </div>
+</div>
+<div class="content container">
+
+<!-- Content appended here -->
+<div class="franklin-content"><h1 id="realnvp_for_physicists"><a href="#realnvp_for_physicists" class="header-anchor">RealNVP for physicists</a></h1>
+<p>To understand RealNVP, its proper to start from normalizing flow</p>
+<p><a href="https://blog.evjang.com/2018/01/nf1.html">https://blog.evjang.com/2018/01/nf1.html</a></p>
+<h2 id="understand_bijectors"><a href="#understand_bijectors" class="header-anchor">Understand Bijectors</a></h2>
+<p>Suppose we have a Bijector \(z=f(x)\)</p>
+<p><strong>Inference</strong> refers to</p>
+\(x\sim \hat p_X\)
+\(z=f(x)\)
+<p><strong>Generation</strong> referes to</p>
+\(z\sim p_Z\)
+\(x=f^{-1}(z)\)
+<h4 id="tractable_density"><a href="#tractable_density" class="header-anchor">Tractable density</a></h4>
+<p>The change of probability</p>
+<p>\(p_X(x) = p_Z(f(x))\left\vert\det \left(\frac{\partial f(x)}{\partial x^T}\right)\right\vert\) \(\log p_X(x) = \log\left(p_Z\left(f(x)\right)\right) + \log\left(\left\vert\det \left(\frac{\partial f(x)}{\partial x^T}\right)\right\vert\right)\)</p>
+<h5 id="the_detailed_derivation"><a href="#the_detailed_derivation" class="header-anchor">The detailed derivation</a></h5>
+<p>Let \((a, b) = x\) and \((u, v) = z\)</p>
+<p>Contributed by Shuo-Hui Li</p>
+\[
+\iint\limits_{u,v}{p_Z(u,v)}\mathrm{d}{A_Z} = \iint\limits_{a,b}p_X(a,b)\mathrm{d}{A}
+\]
+\[
+\begin{split}
+\mathrm{d}{A} &= \mathrm{d}{a}\mathrm{d}{b} \\
+&= \left( \frac{\partial{a}}{\partial{u}}\frac{\partial{b}}{\partial{v}}-\frac{\partial{a}}{\partial{v}}\frac{\partial{b}}{\partial{u}}\right) \mathrm{d}{u}\mathrm{d}{v}\\
+&=\det{\left\vert\begin{matrix}
+\frac{\partial{a}}{\partial{u}} & \frac{\partial{a}}{\partial{v}}\\
+\frac{\partial{b}}{\partial{u}} & \frac{\partial{b}}{\partial{v}}
+\end{matrix}\right\vert} \mathrm{d}{u}\mathrm{d}{v} \\
+\end{split}
+\]
+<p>Here, the matrix inside the determinant is the Jacobian, which can be extended to higher dimensions.</p>
+\[
+\iint\limits_{u,v}{p_Z(u,v)}\mathrm{d}{A_Z} = \iint\limits_{a,b}p_X(a,b)\det{\left\vert\rm Jacobian \right\vert} \mathrm{d}{u}\mathrm{d}{v}
+\]
+\[
+p_Z(u,v) = p_X(a,b)\det{\left\vert\rm Jacobian \right\vert}
+\]
+<h4 id="example_box-muller_algorithm"><a href="#example_box-muller_algorithm" class="header-anchor">Example: Box-Muller Algorithm</a></h4>
+<p>\(z_1, z_2\sim\mathcal U(0,1)\) are two uniform random variables</p>
+\[
+\begin{cases}
+x_1 = \sqrt{-2\ln z_1} \cos(2\pi z_2),\\
+x_2 = \sqrt{-2\ln z_1} \sin(2\pi z_2).
+\end{cases}
+\]
+<p>Then, \(x_1, x_2\) satisfies  normal distribution.</p>
+<p>Try: get the inverse mapping and prove the result.</p>
+<h2 id="realnvp"><a href="#realnvp" class="header-anchor">RealNVP</a></h2>
+<p>A chain of Bijectors, mapping any distribution to normal distribution.</p>
+\[
+\begin{equation}
+H:(u,v)\rightarrow (a,b) \\
+\left\{
+\begin{array}{rl}
+a &= m^0(u,v)u+m^1(u,v)\\
+b &=m^2(u,v)v+m^3(u,v)\\
+\end{array}
+\right.
+\end{equation}
+\]
+<div class="page-foot">
+    <div>
+    <a href="https://github.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github: GiggleLiu</a>
+    <br>
+    <a href="https://twitter.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> Twitter: GiggleLiu</a>
+    <br>
+    <a href="https://scholar.google.com/citations?user=4edw228AAAAJ" rel="nofollow noopener noreferrer"><i class="fa-google-scholar" aria-hidden="true"></i> Google Scholar: 4edw228AAAAJ</a>
+    </div>
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> GiggleLiu. Last modified: November 20, 2022.
+    Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>  <!-- div: content container -->
+    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
+    
+        <script src="/libs/katex/katex.min.js"></script>
+<script src="/libs/katex/contrib/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+
+  </body>
+
+</html>

@@ -1,7 +1,6 @@
----
-layout: post
-title: Jacobians and Hessians for Reversible Primitives
----
+@def title = "Jacobians and Hessians for Reversible Primitives"
+
+# Jacobians and Hessians for Reversible Primitives
 
 This blog covers the Jacobians and Hessians for reversible primitives, they can be used to propagate gradients and Hessians in a reversible programs.
 
