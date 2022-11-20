@@ -8,25 +8,7 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>giggleliu.github.io/_posts/2018-07-09-rbm/index.html</loc>
-    <lastmod>2022-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>giggleliu.github.io/_posts/2020-01-18-jacobians/index.html</loc>
-    <lastmod>2022-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>giggleliu.github.io/_posts/2017-10-01-mselection/index.html</loc>
-    <lastmod>2022-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>giggleliu.github.io/404/index.html</loc>
     <lastmod>2022-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -38,7 +20,19 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>giggleliu.github.io/code/index.html</loc>
+    <lastmod>2022-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>giggleliu.github.io/_posts/2019-04-02-einsumbp/index.html</loc>
+    <lastmod>2022-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>giggleliu.github.io/_posts/2020-01-18-jacobians/index.html</loc>
     <lastmod>2022-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -56,6 +50,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>giggleliu.github.io/_posts/2018-07-09-realnvp/index.html</loc>
+    <lastmod>2022-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>giggleliu.github.io/blogs/index.html</loc>
     <lastmod>2022-11-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -68,13 +68,19 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>giggleliu.github.io/_posts/2018-07-09-realnvp/index.html</loc>
+    <loc>giggleliu.github.io/404/index.html</loc>
     <lastmod>2022-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>giggleliu.github.io/code/index.html</loc>
+    <loc>giggleliu.github.io/_posts/2018-07-09-rbm/index.html</loc>
+    <lastmod>2022-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>giggleliu.github.io/_htmls/404/</loc>
     <lastmod>2022-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -87,12 +93,6 @@
 </url>
 <url>
     <loc>giggleliu.github.io/_htmls/qbirplayground/</loc>
-    <lastmod>2022-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>giggleliu.github.io/_htmls/404/</loc>
     <lastmod>2022-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
