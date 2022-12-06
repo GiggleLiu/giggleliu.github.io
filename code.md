@@ -46,28 +46,28 @@ please <a href="https://github.com/GiggleLiu/giggleliu.github.io/issues">file an
 ~~~
 
 #### Muscle memory (1). Basic types and control flow
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/1.basic/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/1.basic/main.cast}}
 
 #### Muscle memory (2). Array operations
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/2.array/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/2.array/main.cast}}
 
 #### Muscle memory (3). Data types
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/3.types/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/3.types/main.cast}}
 
 #### Muscle memory (4). Functions and multiple dispatch
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/4.multipledispatch/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/4.multipledispatch/main.cast}}
 
 #### Muscle memory (5). Performance tips
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/5.performance/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/5.performance/main.cast}}
 
 #### Muscle memory (6). Meta-programming
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/6.metaprogramming/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/6.metaprogramming/main.cast}}
 
 #### Tutorial on quantum simulator Yao (@v0.8.3)
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/yao/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/yao/main.cast}}
 
 #### The instantiation of a Julia function (in Chinese)
 
-{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/julia-tutorial/livecoding/matmul/main.cast}}
+{{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/matmul/main.cast}}
 
 
