@@ -23,7 +23,7 @@ end
 
 function hfun_bloglist()
     lst = String[]
-    folder = "_posts"
+    folder = "posts"
     for item in readdir(folder)
         path = joinpath(folder, item)
         if endswith(item, ".md")
