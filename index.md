@@ -7,5 +7,5 @@
 ~~~
 
 * [Code](/code)
-* [Blogs](blogs)
+* [Blogs](/blogposts)
 * [About Me](/about)
