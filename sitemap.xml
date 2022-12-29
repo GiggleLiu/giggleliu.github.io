@@ -3,109 +3,115 @@
 
 <url>
     <loc>giggleliu.github.io/blogposts/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2018-04-16-circuitgrad/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2018-07-09-realnvp/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2019-04-02-einsumbp/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/about/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/code/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2020-01-18-jacobians/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2017-10-01-mselection/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2019-06-18-coloring/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2018-02-01-complex_bp/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>giggleliu.github.io/posts/2022-12-30-chains/index.html</loc>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/posts/2018-07-09-rbm/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/404/index.html</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/_htmls/404/</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/_htmls/TwoQubit-VQE/</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/_htmls/qbirplayground/</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/_htmls/yao_port_qi/</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>giggleliu.github.io/_htmls/qc-abc/</loc>
-    <lastmod>2022-12-07</lastmod>
+    <lastmod>2022-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
