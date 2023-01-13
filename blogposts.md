@@ -1,6 +1,6 @@
 @def title = "Blog Posts"
 
-## Blogs
+# Blog Posts
 ~~~
 {{bloglist}}
 ~~~

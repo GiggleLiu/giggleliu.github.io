@@ -22,8 +22,13 @@ AsciinemaPlayer.create('$(src[1])', target);
 end
 
 function hfun_bloglist()
+    generate_list("posts"; reverse=true)
+end
+function hfun_msc()
+    generate_list("modernscientificcomputing"; reverse=false)
+end
+function generate_list(folder; reverse)
     lst = String[]
-    folder = "posts"
     for item in readdir(folder)
         path = joinpath(folder, item)
         if endswith(item, ".md")
@@ -40,7 +45,7 @@ function hfun_bloglist()
             end
         end
     end
-    return "<ol>$(join(lst[end:-1:1], "\n"))</ol>"
+    return "<ol>$(join(reverse ? lst[end:-1:1] : lst, "\n"))</ol>"
 end
 
 function readtitle(str::String)

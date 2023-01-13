@@ -8,4 +8,5 @@
 
 * [Code](/code)
 * [Blogs](/blogposts)
+* [Modern Scientifc Computing](/msc)
 * [About Me](/about)
