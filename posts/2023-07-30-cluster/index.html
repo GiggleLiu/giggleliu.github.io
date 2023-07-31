@@ -1,0 +1,230 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/styles/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/assets/favicon.png"> <title>Debugging note: HKUST-GZ HPC</title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h1><a href="/">Jinguo LIU</a></h1> <p class=lead >Early to bed and early to rise, makes a man healthy, wealthy, and wise.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/">Home</a> <a class="sidebar-nav-item " href="/blogposts/">Blogs</a> <a class="sidebar-nav-item " href="/code/">Code</a> <a class="sidebar-nav-item " href="/about/">About Me</a> </nav> <p>&copy; GiggleLiu.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=debugging_note_hkust-gz_hpc ><a href="#debugging_note_hkust-gz_hpc" class=header-anchor >Debugging note: HKUST-GZ HPC</a></h1> <h2 id=step_0_log_in_with_linux_operating_system ><a href="#step_0_log_in_with_linux_operating_system" class=header-anchor >Step 0: Log in &#40;with Linux operating system&#41;</a></h2> <p>Edit <code>.ssh/config</code> by adding the following lines</p> <pre><code class="julia hljs">Host hpc
+    User you-user-name
+    HostName <span class=hljs-number >10.120</span><span class=hljs-number >.1</span><span class=hljs-number >.2</span></code></pre> <p>To avoid repeated typing password, one could use <code>ssh-copy-id</code> command, <a href="https://www.thegeekstuff.com/2008/11/3-steps-to-perform-ssh-login-without-password-using-ssh-keygen-ssh-copy-id/">read more</a>.</p> <h2 id=step_1_install_julia ><a href="#step_1_install_julia" class=header-anchor >Step 1: Install Julia</a></h2> <p>Edit <code>.bashrc</code> or <code>.zshrc</code> by adding the following two lines</p> <pre><code class="bash hljs"><span class=hljs-built_in >export</span> JULIAUP_SERVER=https://mirror.nju.edu.cn/julia-releases/
+<span class=hljs-built_in >export</span> JULIAUP_SERVER=https://mirror.nju.edu.cn/julia-releases/</code></pre> <p>Install Juliaup and Julia with</p> <pre><code class="julia hljs">curl -fsSL https://install.julialang.org | sh</code></pre>
+<p>If the above command fails, please run again. Type <code>julia</code> to start a julia REPL, and then install the following packages by typing</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Revise, Yao, CuYao, OMEinsum</code></pre>
+<h2 id=submit_an_mpi_job_to_lsf ><a href="#submit_an_mpi_job_to_lsf" class=header-anchor >submit an MPI job to LSF</a></h2>
+<pre><code class="bash hljs">git <span class=hljs-built_in >clone</span> https://github.com/CodingThrust/CodingClub.git
+<span class=hljs-built_in >cd</span> mpi
+bsub &lt; julia-helloworld-lsf.job</code></pre>
+<p>To know more about how does MPI works, please read the <code>README.md</code> in your current working folder.</p>
+<h2 id=single-gpu_benchmark ><a href="#single-gpu_benchmark" class=header-anchor >Single-GPU benchmark</a></h2>
+<pre><code class="julia hljs">git clone https://github.com/TensorBFS/TensorNetworkBenchmarks.git
+cd TensorNetworkBenchmarks/scripts
+julia -e <span class=hljs-string >&quot;using Pkg; Pkg.instantiate()&quot;</span>
+bsub &lt; julia-gpu-lsf.job
+bsub &lt; pytorch-gpu-lsf.job</code></pre>
+<h2 id=multi-gpu_test ><a href="#multi-gpu_test" class=header-anchor >Multi-GPU test</a></h2>
+<pre><code class="bash hljs"><span class=hljs-built_in >mkdir</span> jcode
+<span class=hljs-built_in >cd</span> jcode
+<span class=hljs-built_in >mkdir</span> lab
+<span class=hljs-built_in >cd</span> lab
+wget https://gist.githubusercontent.com/GiggleLiu/d5b66c9883f0c5df41a440589983ab99/raw/defd440d6379d85c93034b1ccf75b9650804992c/tensorcontract_multigpu.jl</code></pre>
+<p>To be continue.</p>
+<h2 id=problems ><a href="#problems" class=header-anchor >Problems</a></h2>
+<h3 id=julia_startup_takes_6s ><a href="#julia_startup_takes_6s" class=header-anchor >Julia startup takes 6s</a></h3>
+<pre><code class="julia hljs">[jinguoliu<span class=hljs-meta >@mgt02</span> ~]$ julia
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  <span class=hljs-built_in >Type</span> <span class=hljs-string >&quot;?&quot;</span> <span class=hljs-keyword >for</span> help, <span class=hljs-string >&quot;]?&quot;</span> <span class=hljs-keyword >for</span> Pkg help.
+  | | | | | | |/ _<span class=hljs-string >` |  |
+  | | |_| | | | (_| |  |  Version 1.9.2 (2023-07-05)
+ _/ |\__&#x27;_|_|_|\__&#x27;_|  |  Official https://julialang.org/ release
+|__/                   |</span></code></pre>
+<h3 id=using_a_julia_package_takes_too_long ><a href="#using_a_julia_package_takes_too_long" class=header-anchor >Using a julia package takes too long</a></h3>
+<pre><code class="julia hljs">julia&gt; <span class=hljs-meta >@time</span> <span class=hljs-keyword >using</span> Yao
+  <span class=hljs-number >3.322434</span> seconds (<span class=hljs-number >776.64</span> k allocations: <span class=hljs-number >51.804</span> MiB, <span class=hljs-number >2.56</span>% gc time, <span class=hljs-number >0.68</span>% compilation time)</code></pre>
+<p>For comparison, the time on my laptop</p>
+<pre><code class="julia hljs">julia&gt; <span class=hljs-meta >@time</span> <span class=hljs-keyword >using</span> Yao
+  <span class=hljs-number >0.937178</span> seconds (<span class=hljs-number >772.86</span> k allocations: <span class=hljs-number >51.008</span> MiB, <span class=hljs-number >10.43</span>% gc time, <span class=hljs-number >1.82</span>% compilation time)</code></pre>
+<h3 id=cudajl_can_not_download_cuda_driver ><a href="#cudajl_can_not_download_cuda_driver" class=header-anchor >CUDA.jl can not download CUDA driver</a></h3>
+<pre><code class="bash hljs">[jinguoliu@mgt02 gpu]$ <span class=hljs-built_in >cat</span> 143542.err 
+ Downloading artifact: LLVMExtra
+ Downloading artifact: LLVMExtra
+ERROR: LoadError: InitError: Unable to automatically download/install artifact <span class=hljs-string >&#x27;LLVMExtra&#x27;</span> from sources listed <span class=hljs-keyword >in</span> <span class=hljs-string >&#x27;/hpc/users/HKUST-GZ/jinguoliu/.julia/packages/LLVMExtra_jll/5xA91/Artifacts.toml&#x27;</span>.
+Sources attempted:
+- http://cn-southeast.pkg.juliacn.com/artifact/0fee7c1c15f87bbf886d08a1a90ce0e85c6d2453
+    Error: RequestError: Connection <span class=hljs-built_in >timeout</span> after 30031 ms <span class=hljs-keyword >while</span> requesting http://cn-southeast.pkg.juliacn.com/artifact/0fee7c1c15f87bbf886d08a1a90ce0e85c6d2453
+- https://github.com/JuliaBinaryWrappers/LLVMExtra_jll.jl/releases/download/LLVMExtra-v0.0.23+0/LLVMExtra.v0.0.23.x86_64-linux-gnu-cxx11-llvm_version+14.tar.gz
+    Error: RequestError: HTTP/2 302 (Failed to connect to objects.githubusercontent.com port 443 after 28133 ms: Connection timed out) <span class=hljs-keyword >while</span> requesting https://github.com/JuliaBinaryWrappers/LLVMExtra_jll.jl/releases/download/LLVMExtra-v0.0.23+0/LLVMExtra.v0.0.23.x86_64-linux-gnu-cxx11-llvm_version+14.tar.gz
+
+Stacktrace:
+  [1] error(s::String)
+    @ Base ./error.jl:35
+  [2] ensure_artifact_installed(name::String, meta::Dict{String, Any}, artifacts_toml::String; platform::Base.BinaryPlatforms.Platform, verbose::Bool, quiet_download::Bool, io::IOStream)
+    @ Pkg.Artifacts ~/software/julia-1.9.0/share/julia/stdlib/v1.9/Pkg/src/Artifacts.jl:443
+  [3] ensure_artifact_installed(name::String, artifacts_toml::String; platform::Base.BinaryPlatforms.Platform, pkg_uuid::Nothing, verbose::Bool, quiet_download::Bool, io::IOStream)
+    @ Pkg.Artifacts ~/software/julia-1.9.0/share/julia/stdlib/v1.9/Pkg/src/Artifacts.jl:383
+  [4] _artifact_str(__module__::Module, artifacts_toml::String, name::SubString{String}, path_tail::String, artifact_dict::Dict{String, Any}, <span class=hljs-built_in >hash</span>::Base.SHA1, platform::Base.BinaryPlatforms.Platform, lazyartifacts::Any)
+    @ Artifacts ~/software/julia-1.9.0/share/julia/stdlib/v1.9/Artifacts/src/Artifacts.jl:549
+  [5] invokelatest(::Any, ::Any, ::Vararg{Any}; kwargs::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+    @ Base ./essentials.jl:816
+  [6] invokelatest(::Any, ::Any, ::Vararg{Any})
+    @ Base ./essentials.jl:813
+  [7] macro expansion
+    @ ~/software/julia-1.9.0/share/julia/stdlib/v1.9/Artifacts/src/Artifacts.jl:710 [inlined]
+  [8] find_artifact_dir()
+    @ LLVMExtra_jll ~/.julia/packages/JLLWrappers/QpMQW/src/wrapper_generators.jl:13
+  [9] __init__()
+    @ LLVMExtra_jll ~/.julia/packages/LLVMExtra_jll/5xA91/src/wrappers/x86_64-linux-gnu-cxx11-llvm_version+14.jl:7
+ [10] register_restored_modules(sv::Core.SimpleVector, pkg::Base.PkgId, path::String)
+    @ Base ./loading.jl:1074
+ [11] _include_from_serialized(pkg::Base.PkgId, path::String, ocachepath::String, depmods::Vector{Any})
+    @ Base ./loading.jl:1020
+ [12] _tryrequire_from_serialized(pkg::Base.PkgId, path::String, ocachepath::String)
+    @ Base ./loading.jl:1407
+ [13] _require(pkg::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1781
+ [14] _require_prelocked(uuidkey::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1625
+ [15] macro expansion
+    @ ./loading.jl:1613 [inlined]
+ [16] macro expansion
+    @ ./lock.jl:267 [inlined]
+ [17] require(into::Module, mod::Symbol)
+    @ Base ./loading.jl:1576
+ [18] include
+    @ ./Base.jl:457 [inlined]
+ [19] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, <span class=hljs-built_in >source</span>::String)
+    @ Base ./loading.jl:2010
+ [20] top-level scope
+    @ stdin:2
+during initialization of module LLVMExtra_jll
+<span class=hljs-keyword >in</span> expression starting at /hpc/users/HKUST-GZ/jinguoliu/.julia/packages/LLVM/Od0DH/src/LLVM.jl:1
+<span class=hljs-keyword >in</span> expression starting at stdin:2
+ERROR: LoadError: Failed to precompile LLVM [929cbde3-209d-540e-8aea-75f648917ca0] to <span class=hljs-string >&quot;/hpc/users/HKUST-GZ/jinguoliu/.julia/compiled/v1.9/LLVM/jl_J2OmI1&quot;</span>.
+Stacktrace:
+  [1] error(s::String)
+    @ Base ./error.jl:35
+  [2] compilecache(pkg::Base.PkgId, path::String, internal_stderr::IO, internal_stdout::IO, keep_loaded_modules::Bool)
+    @ Base ./loading.jl:2260
+  [3] compilecache
+    @ ./loading.jl:2127 [inlined]
+  [4] _require(pkg::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1770
+  [5] _require_prelocked(uuidkey::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1625
+  [6] macro expansion
+    @ ./loading.jl:1613 [inlined]
+  [7] macro expansion
+    @ ./lock.jl:267 [inlined]
+  [8] require(into::Module, mod::Symbol)
+    @ Base ./loading.jl:1576
+  [9] include
+    @ ./Base.jl:457 [inlined]
+ [10] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, <span class=hljs-built_in >source</span>::String)
+    @ Base ./loading.jl:2010
+ [11] top-level scope
+    @ stdin:2
+<span class=hljs-keyword >in</span> expression starting at /hpc/users/HKUST-GZ/jinguoliu/.julia/packages/GPUCompiler/YO8Uj/src/GPUCompiler.jl:1
+<span class=hljs-keyword >in</span> expression starting at stdin:2
+ERROR: LoadError: Failed to precompile GPUCompiler [61eb1bfa-7361-4325-ad38-22787b887f55] to <span class=hljs-string >&quot;/hpc/users/HKUST-GZ/jinguoliu/.julia/compiled/v1.9/GPUCompiler/jl_RakosM&quot;</span>.
+Stacktrace:
+  [1] error(s::String)
+    @ Base ./error.jl:35
+  [2] compilecache(pkg::Base.PkgId, path::String, internal_stderr::IO, internal_stdout::IO, keep_loaded_modules::Bool)
+    @ Base ./loading.jl:2260
+  [3] compilecache
+    @ ./loading.jl:2127 [inlined]
+  [4] _require(pkg::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1770
+  [5] _require_prelocked(uuidkey::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1625
+  [6] macro expansion
+    @ ./loading.jl:1613 [inlined]
+  [7] macro expansion
+    @ ./lock.jl:267 [inlined]
+  [8] require(into::Module, mod::Symbol)
+    @ Base ./loading.jl:1576
+  [9] include
+    @ ./Base.jl:457 [inlined]
+ [10] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, <span class=hljs-built_in >source</span>::String)
+    @ Base ./loading.jl:2010
+ [11] top-level scope
+    @ stdin:2
+<span class=hljs-keyword >in</span> expression starting at /hpc/users/HKUST-GZ/jinguoliu/.julia/packages/CUDA/tVtYo/src/CUDA.jl:1
+<span class=hljs-keyword >in</span> expression starting at stdin:2
+ERROR: LoadError: Failed to precompile CUDA [052768ef-5323-5732-b1bb-66c8b64840ba] to <span class=hljs-string >&quot;/hpc/users/HKUST-GZ/jinguoliu/.julia/compiled/v1.9/CUDA/jl_gGumDP&quot;</span>.
+Stacktrace:
+  [1] error(s::String)
+    @ Base ./error.jl:35
+  [2] compilecache(pkg::Base.PkgId, path::String, internal_stderr::IO, internal_stdout::IO, keep_loaded_modules::Bool)
+    @ Base ./loading.jl:2260
+  [3] compilecache
+    @ ./loading.jl:2127 [inlined]
+  [4] _require(pkg::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1770
+  [5] _require_prelocked(uuidkey::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+    @ Base ./loading.jl:1625
+  [6] macro expansion
+    @ ./loading.jl:1613 [inlined]
+  [7] macro expansion
+    @ ./lock.jl:267 [inlined]
+  [8] require(into::Module, mod::Symbol)
+    @ Base ./loading.jl:1576
+  [9] include
+    @ ./Base.jl:457 [inlined]
+ [10] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, <span class=hljs-built_in >source</span>::String)
+    @ Base ./loading.jl:2010
+ [11] top-level scope
+    @ stdin:2
+<span class=hljs-keyword >in</span> expression starting at /hpc/users/HKUST-GZ/jinguoliu/.julia/packages/CuYao/xfcjV/src/CuYao.jl:1
+<span class=hljs-keyword >in</span> expression starting at stdin:2
+ERROR: LoadError: Failed to precompile CuYao [b48ca7a8-dd42-11e8-2b8e-1b7706800275] to <span class=hljs-string >&quot;/hpc/users/HKUST-GZ/jinguoliu/.julia/compiled/v1.9/CuYao/jl_8vWrJn&quot;</span>.
+Stacktrace:
+ [1] error(s::String)
+   @ Base ./error.jl:35
+ [2] compilecache(pkg::Base.PkgId, path::String, internal_stderr::IO, internal_stdout::IO, keep_loaded_modules::Bool)
+   @ Base ./loading.jl:2260
+ [3] compilecache
+   @ ./loading.jl:2127 [inlined]
+ [4] _require(pkg::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+   @ Base ./loading.jl:1770
+ [5] _require_prelocked(uuidkey::Base.PkgId, <span class=hljs-built_in >env</span>::String)
+   @ Base ./loading.jl:1625
+ [6] macro expansion
+   @ ./loading.jl:1613 [inlined]
+ [7] macro expansion
+   @ ./lock.jl:267 [inlined]
+ [8] require(into::Module, mod::Symbol)
+   @ Base ./loading.jl:1576
+<span class=hljs-keyword >in</span> expression starting at /hpc/users/HKUST-GZ/jinguoliu/jcode/CodingClub/mpi/gpu/cuda.jl:1</code></pre>
+<p><strong>Resolution</strong></p>
+<p>Configure CUDA runtime with.</p>
+<pre><code class="julia hljs">julia&gt; <span class=hljs-keyword >using</span> CUDA
+
+julia&gt; CUDA.set_runtime_version!(<span class=hljs-string >v&quot;11.4&quot;</span>)</code></pre>
+<p>The version number should be consistent with the <code>module load cuda-11.4</code> in your job file.</p>
+<p>&#40;NOTE: I am not sure about this resolution, please let me know if it does not work&#41;</p>
+<h3 id=juliaup_installation_command_might_fail_due_to_the_network_problem ><a href="#juliaup_installation_command_might_fail_due_to_the_network_problem" class=header-anchor >Juliaup installation command might fail due to the network problem</a></h3>
+<pre><code class="julia hljs">Now installing Juliaup
+Error: Failed to run <span class=hljs-string >`run_command_add`</span>.
+
+Caused by:
+    <span class=hljs-number >0</span>: Failed to update versions db.
+    <span class=hljs-number >1</span>: Failed to download new version db from https://julialang-s3.julialang.org/juliaup/versiondb/versiondb-<span class=hljs-number >1.0</span><span class=hljs-number >.28</span>-x86_64-unknown-linux-musl.json.
+    <span class=hljs-number >2</span>: Failed to download from url <span class=hljs-string >`https://julialang-s3.julialang.org/juliaup/versiondb/versiondb-1.0.28-x86_64-unknown-linux-musl.json`</span>.
+    <span class=hljs-number >3</span>: error sending request <span class=hljs-keyword >for</span> url (https://julialang-s3.julialang.org/juliaup/versiondb/versiondb-<span class=hljs-number >1.0</span><span class=hljs-number >.28</span>-x86_64-unknown-linux-musl.json): operation timed out
+    <span class=hljs-number >4</span>: operation timed out</code></pre>
+<p><strong>Resolution</strong></p>
+<p>Given that you have set the <code>JULIAUP_SERVER</code> environment variable correctly, try again.</p>
+<div class=page-foot >
+    <div>
+    <a href="https://github.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden=true ></i> Github: GiggleLiu</a>
+    <br>
+    <a href="https://twitter.com/GiggleLiu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden=true ></i> Twitter: GiggleLiu</a>
+    <br>
+    <a href="https://scholar.google.com/citations?user=4edw228AAAAJ" rel="nofollow noopener noreferrer"><i class=fa-google-scholar  aria-hidden=true ></i> Google Scholar: 4edw228AAAAJ</a>
+    </div>
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> GiggleLiu. Last modified: July 31, 2023.
+    Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+</div>
+</div>
+    </div>  
+    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin=anonymous ></script>
+    
+    
+        <script src="/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
