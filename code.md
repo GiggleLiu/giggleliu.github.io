@@ -71,3 +71,10 @@ please <a href="https://github.com/GiggleLiu/giggleliu.github.io/issues">file an
 {{livecoding https://raw.githubusercontent.com/GiggleLiu/notebooks/master/livecoding/matmul/main.cast}}
 
 
+## Blogs
+~~~
+{{bloglist}}
+~~~
+
+## Slides
+* [Google Slides: Differential Programming for Physicists](https://docs.google.com/presentation/d/1KZWHSt3GRCGU4AwkwJvnHKxEm-Y-WhTcFSW7sR7cs9s/edit?usp=sharing)
